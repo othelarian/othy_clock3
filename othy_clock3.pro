@@ -6,7 +6,8 @@ CONFIG += c++11
 SOURCES += main.cpp \
     ocseconds.cpp \
     ocminutes.cpp \
-    ochours.cpp
+    ochours.cpp \
+    ocbackground.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,4 +36,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     ocseconds.h \
     ocminutes.h \
-    ochours.h
+    ochours.h \
+    ocbackground.h

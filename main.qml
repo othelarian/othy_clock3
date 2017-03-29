@@ -5,45 +5,41 @@ import OCelements 1.0
 
 Window {
     visible: true
-    width: 300
-    height: 300
+    width: 300; minimumWidth: 200
+    height: 300; minimumHeight: 200
     title: qsTr("Othy clock 3")
     // properties ###############################
-    property int second
-    property int minute
-    property int hour
-    property int weekday
-    property int day
-    property int month
+    property int minute: -1
+    property int hour: -1
+    property int weekday: -1
+    property int day: -1
+    property int month: -1
     // launch time ##############################
     Component.onCompleted: {
-        // initialize
-        //
-        second = 0
-        //
-        // init the timer
         timer.start()
     }
     // timer ####################################
     Timer {
         id: timer; interval: 1000; running: false; repeat: true
         onTriggered: {
+            var dte = new Date()
             //
-            second++
-            tst1.text = second
+            if (dte.getMinutes() != minute) {
+                //
+                minute = dte.getMinutes()
+                //
+                //
+                secondsElt.even = (minute%2 == 0)? true : false
+            }
             //
+            // TEST ZONE
+            // TEST ZONE
+            //
+            secondsElt.value = dte.getSeconds()
         }
     }
-    // TEST PURPOSE
-    Text {
-        id: tst1
-        x: 10; y: 10
-        text: "test"
-    }
-
-    // background ###############################
-    // elements #################################
-    // background ###########
+    // main background ##########################
+    OCbackground { id: bgElt; anchors.fill: parent }
     // hours ################
     OChours {
         id: hoursElt
@@ -53,10 +49,5 @@ Window {
     }
     // minutes ##############
     // seconds ##############
-    OCseconds {
-        id: secondsElt
-        //
-        anchors.fill: parent
-        //
-    }
+    OCseconds { id: secondsElt; anchors.fill: parent }
 }
