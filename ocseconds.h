@@ -7,13 +7,15 @@
 #include <QQuickItem>
 #include <QQuickPaintedItem>
 
-class OCseconds : public QQuickPaintedItem
+// OCsecondsCog class ###################
+
+class OCsecondsCog : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(int value WRITE setValue)
     Q_PROPERTY(bool even WRITE setEven)
 public:
-    OCseconds(QQuickItem *parent = 0);
+    OCsecondsCog(QQuickItem *parent = 0);
     void paint(QPainter *painter);
     void setValue(int value);
     void setEven(bool even);

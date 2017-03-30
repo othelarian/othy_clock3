@@ -4,27 +4,50 @@
 
 OCbackground::OCbackground(QQuickItem *parent) : QQuickPaintedItem(parent)
 {
-    //
-    m_weekpath.arcTo(QRectF(QPointF(0,0),QPointF(200,200)),30,160);
-    //
+    m_settings = OCsettings::getInstance();
 }
 
 void OCbackground::paint(QPainter *painter)
 {
-    //
-    int dim = qMax(width(),height());
-    QPoint center(width()/2,height()/2);
-    //int centerx = w
-    //
-    qInfo() << "bg dim: " << dim;
-    //
+    // set basic parameters
+    int dim = qMin(width(),height());
+    double scale = dim/300.0;
+    QPointF center(width()/2,height()/2);
+    painter->setRenderHint(QPainter::Antialiasing);
     painter->translate(center);
+    painter->setPen(Qt::NoPen);
+    int size, thick;
+    QRectF maxrect;
+    QRectF minrect;
+    // painting months background
     //
-    QBrush brush(QColor("#ff0000"));
-    painter->setBrush(brush);
+    // painting days background
     //
-    //painter->drawPath(m_weekpath);
+    // NOTE : add weeks separators ?
+    //
+    // painting week background
+    //
+    //
+    // painting hours background
+    painter->save();
+    size = int(m_settings->getSizeHoursBgDim()*scale);
+    thick = int(m_settings->getSizeHoursBgThick()*scale);
+    maxrect.setRect(-size/2,-size/2,size,size);
+    minrect.setRect(-(size-thick)/2,-(size-thick)/2,size-thick,size-thick);
+    painter->setBrush(QBrush(m_settings->getColHoursBg()));
+    QPainterPath hoursPath;
+    hoursPath.addEllipse(maxrect);
+    hoursPath.addEllipse(minrect);
+    painter->drawPath(hoursPath);
+    painter->restore();
+    // painting minutes background
+    //
+    // painting seconds background
+    //
     //
 }
 
-
+void OCbackground::setHoursValue(int value)
+{
+    m_hours_value = (value < 12)? value : value-12;
+}

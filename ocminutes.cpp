@@ -1,10 +1,26 @@
 #include "ocminutes.h"
 
-OCminutes::OCminutes(QQuickItem *parent) : QQuickPaintedItem(parent)
+// OCminutesTicks methods ###############
+
+OCminutesTicks::OCminutesTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
 {
+    //
 }
 
-void OCminutes::paint(QPainter *painter)
+void OCminutesTicks::paint(QPainter *painter)
+{
+    //
+    //
+}
+
+// OCminutesCog methods #################
+
+OCminutesCog::OCminutesCog(QQuickItem *parent) : QQuickPaintedItem(parent)
+{
+    //
+}
+
+void OCminutesCog::paint(QPainter *painter)
 {
     //
     //

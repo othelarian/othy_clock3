@@ -1,15 +1,18 @@
 #include "ocseconds.h"
 
-OCseconds::OCseconds(QQuickItem *parent) : QQuickPaintedItem(parent)
+OCsecondsCog::OCsecondsCog(QQuickItem *parent) : QQuickPaintedItem(parent)
 {
     m_value = 0;
     m_even = true;
 }
 
-void OCseconds::paint(QPainter *painter)
+void OCsecondsCog::paint(QPainter *painter)
 {
     if (m_value == 0 && m_even) return;
     int dim = qMax(width(),height());
+    //
+    // TODO : determine the size
+    //
     QPointF center(width()/2,height()/2);
     //
     QBrush brush(QColor("#0045ff"));
@@ -24,9 +27,13 @@ void OCseconds::paint(QPainter *painter)
     //
     if (m_value == 0 && !m_even) {
         //
+        //secondsPath.addEllipse();
         //
     }
     else {
+        //
+        int arc = 6*m_value;
+        //
         if (m_even) {
             //
             //
@@ -39,16 +46,16 @@ void OCseconds::paint(QPainter *painter)
     //
     int arc = 6*m_value;
     //
-    secondsPath.arcTo(QRectF(-100,-100,200,200),90,-arc);
+    secondsPath.arcTo(QRectF(-80,-80,200,200),90,-arc);
     //
-    secondsPath.arcTo(QRectF(-90,-90,180,180),90-arc,arc);
+    secondsPath.arcTo(QRectF(-70,-70,180,180),90-arc,arc);
     //
     //
     painter->drawPath(secondsPath);
     //
 }
 
-void OCseconds::setValue(int value)
+void OCsecondsCog::setValue(int value)
 {
     //
     m_value = value;
@@ -56,4 +63,4 @@ void OCseconds::setValue(int value)
     //
 }
 
-void OCseconds::setEven(bool even) { m_even = even; }
+void OCsecondsCog::setEven(bool even) { m_even = even; }

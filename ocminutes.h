@@ -4,12 +4,28 @@
 #include <QQuickItem>
 #include <QQuickPaintedItem>
 
-class OCminutes : public QQuickPaintedItem
+#include "ocsettings.h"
+
+// OCminutesTicks class #################
+
+class OCminutesTicks : public QQuickPaintedItem
 {
     Q_OBJECT
 public:
-    OCminutes(QQuickItem *parent = 0);
+    OCminutesTicks(QQuickItem *parent = 0);
     void paint(QPainter *painter);
+    //
+};
+
+// OCminutesCog class ###################
+
+class OCminutesCog : public QQuickPaintedItem
+{
+    Q_OBJECT
+public:
+    OCminutesCog(QQuickItem *parent = 0);
+    void paint(QPainter *painter);
+    //
 };
 
 #endif // OCMINUTES_H

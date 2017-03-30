@@ -1,64 +1,74 @@
 #include "ochours.h"
 
-OChours::OChours(QQuickItem *parent) : QQuickPaintedItem(parent)
+// OChoursTicks methods #################
+
+OChoursTicks::OChoursTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
 {
-    // backcirclepath #############
-    int rc = 150, rw = 20;
-    backcirclepath.addEllipse(-rc/2,-rc/2,rc,rc);
-    backcirclepath.addEllipse(-(rc-rw)/2,-(rc-rw)/2,rc-rw,rc-rw);
-    // backcogpath ################
+    m_settings = OCsettings::getInstance();
+}
+
+void OChoursTicks::paint(QPainter *painter)
+{
+    // set basic parameters
+    int dim = qMin(width(),height());
+    double scale = dim/300.0;
+    QPointF center(width()/2,height()/2);
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->translate(center);
+    painter->setPen(Qt::NoPen);
+    // painting back ticks
     //
-    //backcogpath.addRect(20,20,60,60);
     //
-    for (int i=0;i<1;i++) {
-        //
-        QPolygonF poly;
-        //
-        //
-        //
+}
+
+// OChoursCog methods ###################
+
+OChoursCog::OChoursCog(QQuickItem *parent) : QQuickPaintedItem(parent)
+{
+    m_settings = OCsettings::getInstance();
+}
+
+void OChoursCog::paint(QPainter *painter)
+{
+    // set basic parameters
+    int dim = qMin(width(),height());
+    double scale = dim/300.0;
+    QPointF center(width()/2,height()/2);
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->translate(center);
+    painter->setPen(Qt::NoPen);
+    // painting cog
+    //
+    // TODO : the cog
+    //
+    // painting arc
+    if (m_value == 0) return;
+    int arcsize = int(m_settings->getSizeHoursArcDim()*scale);
+    int arcthick = int(m_settings->getSizeHoursArcThick()*scale);
+    QRectF arcmaxrect(-arcsize/2,-arcsize/2,arcsize,arcsize);
+    QRectF arcminrect(-(arcsize-arcthick)/2,-(arcsize-arcthick)/2,arcsize-arcthick,arcsize-arcthick);
+    painter->setBrush(QBrush(m_settings->getColHoursArc()));
+    if (m_value == 12) {
+        QPainterPath ringPath;
+        ringPath.addEllipse(arcmaxrect);
+        ringPath.addEllipse(arcminrect);
+        painter->drawPath(ringPath);
     }
-    //
-    //backcogpath.addPolygon();
-    //
-    // other cogs #################
-    //
+    else {
+        int arc = 30*((m_value < 12)? m_value : m_value-12);
+        QPainterPath arcPath;
+        if (m_value < 12) {
+            arcPath.moveTo(0,-(arcsize-arcthick)/2);
+            arcPath.arcTo(arcmaxrect,90,-arc);
+            arcPath.arcTo(arcminrect,90-arc,arc);
+        }
+        else {
+            arcPath.moveTo(0,-(arcsize-arcthick)/2);
+            arcPath.arcTo(arcmaxrect,90,360-arc);
+            arcPath.arcTo(arcminrect,90+360-arc,-360+arc);
+        }
+        painter->drawPath(arcPath);
+    }
 }
 
-void OChours::paint(QPainter *painter)
-{
-    // test values
-    //
-    int dimw = 200;
-    int dimh = 200;
-    //
-    // determine the middle of the screen
-    //
-    int midwidth = width()/2;
-    int midheight = height()/2;
-    //
-    qInfo() << "width: " << width() << " - midwidth: " << midwidth;
-    //
-    // draw the back cog
-    //
-    QBrush brush(QColor("#ff00ff"));
-    painter->setBrush(brush);
-    //
-    painter->translate(midwidth,midheight);
-    //
-    painter->drawPath(backcirclepath);
-    //
-    //QPainterPath backcogpath;
-    //
-    //painter->drawPath(backcogpath);
-    //
-    //int rc = 150;
-    //
-    //painter->drawEllipse(midwidth-rc/2,midheight-rc/2,rc,rc);
-    //
-    //
-}
-
-void OChours::setValue(int value)
-{
-    m_value = value;
-}
+void OChoursCog::setValue(int value) { m_value = value; update(); }
