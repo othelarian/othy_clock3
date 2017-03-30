@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
+import QtQuick.Controls 2.1
 
 import OCelements 1.0
 
@@ -110,7 +111,113 @@ Window {
     Window {
         id: settings
         visible: settingsBtn.opened
+        property int fwidth: 320
+        property int fheight: 210
+        width: fwidth; minimumWidth: fwidth; maximumWidth: fwidth
+        height: fheight; minimumHeight: fheight; maximumHeight: fheight
         onClosing: { settingsBtn.opened = false }
-        //
+        Column{
+            id: settingsColumn
+            y: 5; width: 100
+            spacing: 2
+            property int btnwidth: 80
+            property int btnheight: 20
+            Button {
+                id: bgSettingsBtn
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Global BG"
+                //
+                //
+            }
+            Button {
+                id: secondsSettingsBtn
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Seconds"
+                //
+            }
+            Button {
+                id: minutesSettingsBtn
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Minutes"
+                //
+            }
+            Button {
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Hours"
+                //
+            }
+            Button {
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Week"
+                //
+            }
+            Button {
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Days"
+                //
+            }
+            Button {
+                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
+                text: "Months"
+                //
+            }
+        }
+        StackView {
+            id: settingsStack
+            width: 210; x: 100; y: 5
+            initialItem: bgSettingsScreen
+            //
+            //
+            Item {
+                id: bgSettingsScreen
+                visible: false
+                onVisibleChanged: {
+                    //
+                    console.log("test visibility: "+visible)
+                    //
+                    bgSettingsBtn.highlighted = true
+                    //
+                }
+                //
+                Text { text: "test" }
+                //
+            }
+            Item {
+                id: secondsSettingsScreen
+                visible: false
+                //
+                //
+            }
+            Item {
+                id: minutesSettingsScreen
+                visible: false
+                //
+                //
+            }
+            Item {
+                id: hoursSCreen
+                visible: false
+                //
+                //
+            }
+            Item {
+                id: weekScreen
+                visible: false
+                //
+                //
+            }
+            Item {
+                id: daysScreen
+                visible: false
+                //
+                //
+            }
+            Item {
+                id: monthsScreen
+                visible: false
+                //
+                //
+            }
+        }
     }
 }
