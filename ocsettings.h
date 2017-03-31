@@ -3,6 +3,8 @@
 
 #include <QColor>
 #include <QObject>
+#include <QSettings>
+#include <QHash>
 
 class OCsettings : public QObject
 {
@@ -36,9 +38,23 @@ public:
     //
     // SIZES SETTERS ###########
     //
+    //
+    // ACCESSORS ###############
+    Q_INVOKABLE void setColor(QString name, QColor value, bool init);
+    Q_INVOKABLE QColor getColor(QString name);
+    Q_INVOKABLE void setSize(QString name, int value, bool init);
+    Q_INVOKABLE int getSize(QString name);
+    Q_INVOKABLE void setActive(QString name, bool value, bool init);
+    Q_INVOKABLE bool getActive(QString name);
+    //
 private:
     OCsettings(QObject *parent = 0);
     static OCsettings* m_instance;
+    //
+    QSettings m_settings;
+    QHash<QString,QVariant> m_default;
+    QHash<QString,QVariant> m_values;
+    //
     // COLORS ##################
     // global background color
     QColor m_col_bg;

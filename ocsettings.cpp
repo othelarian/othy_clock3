@@ -9,6 +9,9 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // INIT COLORS ########
     // global background color
     m_col_bg.setRgb(0,0,0);
+    //
+    m_default["col_bg"] = QColor(0,0,0);
+    //
     // months colors
     //
     // hours colors
@@ -32,6 +35,12 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     m_size_hours_arc_dim = 200;
     m_size_hours_arc_thick = 15;
     //
+    //
+    QHashIterator<QString,QVariant> i(m_default);
+    while (i.hasNext()) {
+        i.next();
+        m_values.insert(i.key(),m_settings.value(i.key(),i.value()));
+    }
 }
 
 OCsettings* OCsettings::getInstance()
@@ -39,6 +48,7 @@ OCsettings* OCsettings::getInstance()
     if (m_instance == nullptr) m_instance = new OCsettings();
     return m_instance;
 }
+
 
 // COLORS GETTERS ############################
 
@@ -72,3 +82,29 @@ void OCsettings::setBgGlobal(QColor color) {
 }
 
 // SIZES SETTERS #############################
+
+// ACCESSORS #################################
+
+void OCsettings::setColor(QString name, QColor value, bool init)
+{
+    //
+    //
+}
+
+QColor OCsettings::getColor(QString name) { return m_values[name].value<QColor>(); }
+
+void OCsettings::setSize(QString name, int value, bool init)
+{
+    //
+    //
+}
+
+int OCsettings::getSize(QString name) { return m_values[name].toInt(); }
+
+void OCsettings::setActive(QString name, bool value, bool init)
+{
+    //
+    //
+}
+
+bool OCsettings::getActive(QString name) { return m_values[name].toBool(); }

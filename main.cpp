@@ -40,6 +40,9 @@ int main(int argc, char *argv[])
 {
     // init global variables
     QGuiApplication app(argc, argv);
+    QCoreApplication::setApplicationName("Othy Clock 3");
+    QCoreApplication::setApplicationVersion("1.0.0");
+    QCoreApplication::setOrganizationName("Othy Software");
     OCsettings* ocsettings = OCsettings::getInstance();
     // set the qml custom types
     qmlRegisterType<OCbackground>("OCelements",1,0,"OCbackground");

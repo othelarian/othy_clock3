@@ -23,7 +23,7 @@ Window {
         //
         testi = 0
         //
-        bgAll.color = ocsettings.bgGlobal
+        bgAll.color = ocsettings.getColor("col_bg")
         var dte = new Date();
         //
         //
