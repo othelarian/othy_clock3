@@ -16,7 +16,7 @@ void OChoursTicks::paint(QPainter *painter)
     painter->setRenderHint(QPainter::Antialiasing);
     painter->translate(center);
     painter->setPen(Qt::NoPen);
-    // painting back ticks
+    // painting ticks
     //
     //
 }
@@ -37,38 +37,29 @@ void OChoursCog::paint(QPainter *painter)
     painter->setRenderHint(QPainter::Antialiasing);
     painter->translate(center);
     painter->setPen(Qt::NoPen);
-    // painting cog
-    //
-    // TODO : the cog
-    //
+    int size = 0, thick = 0;
+    int arc = 30*((m_value < 12)? m_value : m_value-12);
     // painting arc
-    if (m_value == 0) return;
-    int arcsize = int(m_settings->getSizeHoursArcDim()*scale);
-    int arcthick = int(m_settings->getSizeHoursArcThick()*scale);
-    QRectF arcmaxrect(-arcsize/2,-arcsize/2,arcsize,arcsize);
-    QRectF arcminrect(-(arcsize-arcthick)/2,-(arcsize-arcthick)/2,arcsize-arcthick,arcsize-arcthick);
-    painter->setBrush(QBrush(m_settings->getColHoursArc()));
-    if (m_value == 12) {
-        QPainterPath ringPath;
-        ringPath.addEllipse(arcmaxrect);
-        ringPath.addEllipse(arcminrect);
-        painter->drawPath(ringPath);
+    if (m_value != 0) {
+        painter->save();
+        size = int(m_settings->getSizeHoursArcDim()*scale);
+        thick = int(m_settings->getSizeHoursArcThick()*scale);
+        painter->setBrush(QBrush(m_settings->getColHoursArc()));
+        if (m_value == 12) painter->drawPath(ocDrawRing(size,thick));
+        else painter->drawPath(ocDrawArc(size,thick,arc,m_value < 12));
+        painter->restore();
     }
-    else {
-        int arc = 30*((m_value < 12)? m_value : m_value-12);
-        QPainterPath arcPath;
-        if (m_value < 12) {
-            arcPath.moveTo(0,-(arcsize-arcthick)/2);
-            arcPath.arcTo(arcmaxrect,90,-arc);
-            arcPath.arcTo(arcminrect,90-arc,arc);
-        }
-        else {
-            arcPath.moveTo(0,-(arcsize-arcthick)/2);
-            arcPath.arcTo(arcmaxrect,90,360-arc);
-            arcPath.arcTo(arcminrect,90+360-arc,-360+arc);
-        }
-        painter->drawPath(arcPath);
-    }
+    // painting cog
+    painter->save();
+    size = int(m_settings->getSizeHoursNeedleDim()*scale);
+    thick = int(m_settings->getSizeHoursNeedleThick()*scale);
+    int dist = int(m_settings->getSizeHoursNeedleDist()*scale);
+    int dx = int(qCos(qDegreesToRadians(double(arc-90)))*dist);
+    int dy = int(qSin(qDegreesToRadians(double(arc-90)))*dist);
+    painter->translate(dx,dy);
+    painter->setBrush(QBrush(m_settings->getColHoursNeedle()));
+    painter->drawPath(ocDrawRing(size,thick));
+    painter->restore();
 }
 
 void OChoursCog::setValue(int value) { m_value = value; update(); }

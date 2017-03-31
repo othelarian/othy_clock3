@@ -6,8 +6,15 @@
 #include <QPainterPath>
 #include <QQuickItem>
 #include <QQuickPaintedItem>
+#include <QtMath>
 
 #include "ocsettings.h"
+
+// global prototypes ####################
+
+QPainterPath ocDrawRing(int size, int thick);
+
+QPainterPath ocDrawArc(int size, int thick, int angle, bool sens);
 
 // OChoursTicks class ###################
 

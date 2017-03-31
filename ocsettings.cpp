@@ -13,8 +13,10 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     //
     // hours colors
     m_col_hours_bg.setRgb(60,60,60);
-    m_col_hours_needle.setRgb(255,0,0);
+    m_col_hours_needle.setRgb(255,100,10);
     m_col_hours_arc.setRgb(0,125,255);
+    m_col_hours_bticks.setRgb(200,200,200,100);
+    m_col_hours_fticks.setRgb(255,100,10,150);
     // minutes colors
     //
     // seconds colors
@@ -24,8 +26,8 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // hours sizes
     m_size_hours_bg_dim = 197;
     m_size_hours_bg_thick = 8;
-    m_size_hours_needle_dist = 100;
-    m_size_hours_needle_dim = 40;
+    m_size_hours_needle_dist = 92;
+    m_size_hours_needle_dim = 32;
     m_size_hours_needle_thick = 10;
     m_size_hours_arc_dim = 200;
     m_size_hours_arc_thick = 15;

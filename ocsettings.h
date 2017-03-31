@@ -47,6 +47,8 @@ private:
     QColor m_col_hours_bg;
     QColor m_col_hours_needle;
     QColor m_col_hours_arc;
+    QColor m_col_hours_bticks;
+    QColor m_col_hours_fticks;
     // minutes colors
     //
     // seconds colors

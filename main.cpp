@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QPainterPath>
 
 #include "ocsettings.h"
 #include "ocbackground.h"
@@ -9,6 +10,29 @@
 #include "ocseconds.h"
 #include "ocminutes.h"
 #include "ochours.h"
+
+// helpers ######################################
+
+QPainterPath ocDrawRing(int size, int thick)
+{
+    QRectF maxrect(-size/2,-size/2,size,size);
+    QRectF minrect(-(size-thick)/2,-(size-thick)/2,size-thick,size-thick);
+    QPainterPath path;
+    path.addEllipse(maxrect);
+    path.addEllipse(minrect);
+    return path;
+}
+
+QPainterPath ocDrawArc(int size, int thick, int angle, bool sens)
+{
+    QRectF maxrect(-size/2,-size/2,size,size);
+    QRectF minrect(-(size-thick)/2,-(size-thick)/2,size-thick,size-thick);
+    QPainterPath path;
+    path.moveTo(0,-(size-thick)/2);
+    path.arcTo(maxrect,90,-angle+((sens)? 0 : 360));
+    path.arcTo(minrect,90-angle+((sens)? 0 : 360),angle+((sens)? 0 : -360));
+    return path;
+}
 
 // main function ################################
 

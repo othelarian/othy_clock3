@@ -126,14 +126,13 @@ Window {
                 id: bgSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Global BG"
-                //
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(bgSettingsScreen) }
             }
             Button {
                 id: secondsSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Seconds"
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(secondsSettingsScreen) }
             }
             Button {
                 id: minutesSettingsBtn
@@ -171,13 +170,7 @@ Window {
             Item {
                 id: bgSettingsScreen
                 visible: false
-                onVisibleChanged: {
-                    //
-                    console.log("test visibility: "+visible)
-                    //
-                    bgSettingsBtn.highlighted = true
-                    //
-                }
+                onVisibleChanged: { bgSettingsBtn.highlighted = visible }
                 //
                 Text { text: "test" }
                 //
@@ -185,12 +178,14 @@ Window {
             Item {
                 id: secondsSettingsScreen
                 visible: false
+                onVisibleChanged: { secondsSettingsBtn.highlighted = visible }
                 //
                 //
             }
             Item {
                 id: minutesSettingsScreen
                 visible: false
+                onVisibleChanged: { minutesSettingsBtn.highlighted = visible }
                 //
                 //
             }
