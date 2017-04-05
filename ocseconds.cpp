@@ -1,5 +1,21 @@
 #include "ocseconds.h"
 
+// OCsecondsTicks methods ###############
+
+OCsecondsTicks::OCsecondsTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
+{
+    //
+    //
+}
+
+void OCsecondsTicks::paint(QPainter *painter)
+{
+    //
+    //
+}
+
+// OCsecondsCog methods #################
+
 OCsecondsCog::OCsecondsCog(QQuickItem *parent) : QQuickPaintedItem(parent)
 {
     m_value = 0;

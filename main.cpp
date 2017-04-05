@@ -5,8 +5,9 @@
 
 #include "ocsettings.h"
 #include "ocbackground.h"
-//
-//
+#include "ocmonths.h"
+#include "ocdays.h"
+#include "ocweek.h"
 #include "ocseconds.h"
 #include "ocminutes.h"
 #include "ochours.h"
@@ -46,16 +47,17 @@ int main(int argc, char *argv[])
     OCsettings* ocsettings = OCsettings::getInstance();
     // set the qml custom types
     qmlRegisterType<OCbackground>("OCelements",1,0,"OCbackground");
-    //
-    // TODO : other types
-    //
+    qmlRegisterType<OCmonthsTicks>("OCelements",1,0,"OCmonthsTicks");
+    qmlRegisterType<OCmonthsCog>("OCelements",1,0,"OCmonthsCog");
+    qmlRegisterType<OCdaysTicks>("OCelements",1,0,"OCdaysTicks");
+    qmlRegisterType<OCdaysCog>("OCelements",1,0,"OCdaysCog");
+    qmlRegisterType<OCweekTicks>("OCelements",1,0,"OCweekTicks");
+    qmlRegisterType<OCweekCog>("OCelements",1,0,"OCweekCog");
     qmlRegisterType<OChoursTicks>("OCelements",1,0,"OChoursTicks");
     qmlRegisterType<OChoursCog>("OCelements",1,0,"OChoursCog");
     qmlRegisterType<OCminutesTicks>("OCelements",1,0,"OCminutesTicks");
     qmlRegisterType<OCminutesCog>("OCelements",1,0,"OCminutesCog");
-    //
-    // seconds ticks
-    //
+    qmlRegisterType<OCsecondsTicks>("OCelements",1,0,"OCsecondsTicks");
     qmlRegisterType<OCsecondsCog>("OCelements",1,0,"OCsecondsCog");
     // load the engine
     QQmlApplicationEngine engine;

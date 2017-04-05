@@ -79,19 +79,23 @@ Window {
     Rectangle { id: bgAll; anchors.fill: parent }
     // elements background ######################
     OCbackground { id: bgElt; anchors.fill: parent }
-    //
-    // TODO : other elements
-    //
+    // months ###################################
+    OCmonthsCog { id: monthsCog; anchors.fill: parent }
+    OCmonthsTicks { id: monthsTicks; anchors.fill: parent }
+    // days #####################################
+    OCdaysCog { id: daysCog; anchors.fill: parent }
+    OCdaysTicks { id: daysTicks; anchors.fill: parent }
+    // week #####################################
+    OCweekCog { id: weekCog; anchors.fill: parent }
+    OCweekTicks { id: weekTicks; anchors.fill: parent }
     // hours ####################################
     OChoursCog { id: hoursCog; anchors.fill: parent }
     OChoursTicks { id: hoursTicks; anchors.fill: parent }
     // minutes ##################################
-    OCminutesTicks { id: minutesTicks; anchors.fill: parent }
     OCminutesCog { id: minutesCog; anchors.fill: parent }
+    OCminutesTicks { id: minutesTicks; anchors.fill: parent }
     // seconds ##################################
-    //
-    //OCsecondsTicks { id: secondsTicks; anchors.fill: parent }
-    //
+    OCsecondsTicks { id: secondsTicks; anchors.fill: parent }
     OCsecondsCog { id: secondsCog; anchors.fill: parent }
     // settings access ##########################
     Rectangle {
@@ -282,6 +286,8 @@ Window {
                 id: hoursSettingsScreen
                 visible: false
                 onVisibleChanged: { hoursSettingsBtn.highlighted = visible }
+                //
+                // TODO : bticks & fticks actives
                 //
                 //
                 Text {

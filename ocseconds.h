@@ -7,6 +7,28 @@
 #include <QQuickItem>
 #include <QQuickPaintedItem>
 
+#include "ocsettings.h"
+
+// global prototypes ####################
+
+QPainterPath ocDrawRing(int size, int thick);
+
+QPainterPath ocDrawArc(int size, int thick, int angle, bool sens);
+
+// OCsecondsTicks class #################
+
+class OCsecondsTicks : public QQuickPaintedItem
+{
+    Q_OBJECT
+public:
+    OCsecondsTicks(QQuickItem *parent = 0);
+    void paint(QPainter *painter);
+    //
+private:
+    //
+    //
+};
+
 // OCsecondsCog class ###################
 
 class OCsecondsCog : public QQuickPaintedItem

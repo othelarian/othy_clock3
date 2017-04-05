@@ -8,7 +8,10 @@ SOURCES += main.cpp \
     ocminutes.cpp \
     ochours.cpp \
     ocbackground.cpp \
-    ocsettings.cpp
+    ocsettings.cpp \
+    ocweek.cpp \
+    ocdays.cpp \
+    ocmonths.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,4 +42,7 @@ HEADERS += \
     ocminutes.h \
     ochours.h \
     ocbackground.h \
-    ocsettings.h
+    ocsettings.h \
+    ocweek.h \
+    ocdays.h \
+    ocmonths.h

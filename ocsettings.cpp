@@ -11,8 +11,11 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // INIT COLORS ########
     // global background color
     m_default["col_bg"] = QColor(0,0,0);
-    //
     // months colors
+    //
+    // days colors
+    //
+    // week colors
     //
     // hours colors
     m_default["col_hours_fticks"] = QColor(255,100,10,150);
@@ -25,8 +28,21 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // seconds colors
     //
     // INIT SIZES #########
+    // months sizes
+    //
+    // days sizes
+    //
+    // week sizes
     //
     // hours sizes
+    //
+    m_default["size_hours_fticks_dim"] = 0;
+    m_default["size_hours_fticks_thick"] = 0;
+    m_default["size_hours_fticks_dist"] = 0;
+    m_default["size_hours_bticks_dim"] = 0;
+    m_default["size_hours_bticks_thick"] = 0;
+    m_default["size_hours_bticks_dist"] = 0;
+    //
     m_default["size_hours_bg_dim"] = 197;
     m_default["size_hours_bg_thick"] = 8;
     m_default["size_hours_arc_dim"] = 200;
@@ -38,7 +54,21 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     //
     // seconds sizes
     //
-    // set properties
+    // INIT ACTIVE ########
+    // months actives
+    //
+    // days actives
+    //
+    // week actives
+    //
+    // hours actives
+    m_default["active_hours_fticks"] = true;
+    m_default["active_hours_bticks"] = true;
+    // minutes actives
+    //
+    // seconds actives
+    //
+    // SET PROPERTIES #####
     QHashIterator<QString,QVariant> i(m_default);
     while (i.hasNext()) {
         i.next();
