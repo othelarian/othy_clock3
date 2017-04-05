@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QPainterPath>
@@ -39,7 +39,7 @@ QPainterPath ocDrawArc(int size, int thick, int angle, bool sens)
 int main(int argc, char *argv[])
 {
     // init global variables
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QCoreApplication::setApplicationName("Othy Clock 3");
     QCoreApplication::setApplicationVersion("1.0.0");
     QCoreApplication::setOrganizationName("Othy Software");

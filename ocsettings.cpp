@@ -1,5 +1,7 @@
 #include "ocsettings.h"
 
+#include <QDebug>
+
 // initialize OCsettings instance ############
 
 OCsettings* OCsettings::m_instance = nullptr;
@@ -8,18 +10,16 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
 {
     // INIT COLORS ########
     // global background color
-    m_col_bg.setRgb(0,0,0);
-    //
     m_default["col_bg"] = QColor(0,0,0);
     //
     // months colors
     //
     // hours colors
-    m_col_hours_bg.setRgb(60,60,60);
-    m_col_hours_needle.setRgb(255,100,10);
-    m_col_hours_arc.setRgb(0,125,255);
-    m_col_hours_bticks.setRgb(200,200,200,100);
-    m_col_hours_fticks.setRgb(255,100,10,150);
+    m_default["col_hours_fticks"] = QColor(255,100,10,150);
+    m_default["col_hours_bticks"] = QColor(200,200,200,100);
+    m_default["col_hours_bg"] = QColor(60,60,60);
+    m_default["col_hours_arc"] = QColor(0,125,255);
+    m_default["col_hours_needle"] = QColor(255,100,10);
     // minutes colors
     //
     // seconds colors
@@ -27,15 +27,18 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // INIT SIZES #########
     //
     // hours sizes
-    m_size_hours_bg_dim = 197;
-    m_size_hours_bg_thick = 8;
-    m_size_hours_needle_dist = 92;
-    m_size_hours_needle_dim = 32;
-    m_size_hours_needle_thick = 10;
-    m_size_hours_arc_dim = 200;
-    m_size_hours_arc_thick = 15;
+    m_default["size_hours_bg_dim"] = 197;
+    m_default["size_hours_bg_thick"] = 8;
+    m_default["size_hours_arc_dim"] = 200;
+    m_default["size_hours_arc_thick"] = 15;
+    m_default["size_hours_needle_dim"] = 32;
+    m_default["size_hours_needle_thick"] = 10;
+    m_default["size_hours_needle_dist"] = 92;
+    // minutes sizes
     //
+    // seconds sizes
     //
+    // set properties
     QHashIterator<QString,QVariant> i(m_default);
     while (i.hasNext()) {
         i.next();
@@ -49,62 +52,22 @@ OCsettings* OCsettings::getInstance()
     return m_instance;
 }
 
-
-// COLORS GETTERS ############################
-
-// global background getter
-QColor OCsettings::getBgGlobal() { return m_col_bg; }
-// week colors getters
-// hours colors getters
-QColor OCsettings::getColHoursBg() { return m_col_hours_bg; }
-QColor OCsettings::getColHoursNeedle() { return m_col_hours_needle; }
-QColor OCsettings::getColHoursArc() { return m_col_hours_arc; }
-
-// SIZES GETTERS #############################
-
-// hours size getters
-int OCsettings::getSizeHoursBgDim() { return m_size_hours_bg_dim; }
-int OCsettings::getSizeHoursBgThick() { return m_size_hours_bg_thick; }
-int OCsettings::getSizeHoursNeedleDist() { return m_size_hours_needle_dist; }
-int OCsettings::getSizeHoursNeedleDim() { return m_size_hours_needle_dim; }
-int OCsettings::getSizeHoursNeedleThick() { return m_size_hours_needle_thick; }
-int OCsettings::getSizeHoursArcDim() { return m_size_hours_arc_dim; }
-int OCsettings::getSizeHoursArcThick() { return m_size_hours_arc_thick; }
-
-// COLORS SETTERS ############################
-
-void OCsettings::setBgGlobal(QColor color) {
-    //
-    // TODO : set in local storage
-    //
-    m_col_bg = color;
-    //
-}
-
-// SIZES SETTERS #############################
-
 // ACCESSORS #################################
 
-void OCsettings::setColor(QString name, QColor value, bool init)
+void OCsettings::setSetting(QString name, QVariant value)
 {
-    //
-    //
+    m_values[name] = value;
+    m_settings.setValue(name,value);
+}
+
+void OCsettings::resetSetting(QString name)
+{
+    m_values[name] = m_default[name];
+    m_settings.remove(name);
 }
 
 QColor OCsettings::getColor(QString name) { return m_values[name].value<QColor>(); }
 
-void OCsettings::setSize(QString name, int value, bool init)
-{
-    //
-    //
-}
-
 int OCsettings::getSize(QString name) { return m_values[name].toInt(); }
-
-void OCsettings::setActive(QString name, bool value, bool init)
-{
-    //
-    //
-}
 
 bool OCsettings::getActive(QString name) { return m_values[name].toBool(); }

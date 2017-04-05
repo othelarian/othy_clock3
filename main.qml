@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
+import Qt.labs.platform 1.0
 
 import OCelements 1.0
 
@@ -111,10 +112,27 @@ Window {
     Window {
         id: settings
         visible: settingsBtn.opened
-        property int fwidth: 320
+        property int fwidth: 380
         property int fheight: 210
         width: fwidth; minimumWidth: fwidth; maximumWidth: fwidth
         height: fheight; minimumHeight: fheight; maximumHeight: fheight
+        onVisibleChanged: {
+            // bg init
+            bgColorRect.color = ocsettings.getColor("col_bg")
+            bgColSelector.currentColor = "blue" //ocsettings.getColor("col_bg")
+            // seconds init
+            //
+            // minutes init
+            //
+            // hours init
+            //
+            // week init
+            //
+            // days init
+            //
+            // months init
+            //
+        }
         onClosing: { settingsBtn.opened = false }
         Column{
             id: settingsColumn
@@ -138,80 +156,165 @@ Window {
                 id: minutesSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Minutes"
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(minutesSettingsScreen) }
             }
             Button {
+                id: hoursSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Hours"
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(hoursSettingsScreen) }
             }
             Button {
+                id: weekSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Week"
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(weekSettingsScreen) }
             }
             Button {
+                id: daysSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Days"
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(daysSettingsScreen) }
             }
             Button {
+                id: monthsSettingsBtn
                 width: settingsColumn.btnwidth; height: settingsColumn.btnheight
                 text: "Months"
-                //
+                onClicked: { if (!highlighted) settingsStack.replace(monthsSettingsScreen) }
             }
         }
         StackView {
             id: settingsStack
-            width: 210; x: 100; y: 5
+            anchors.left: parent.left
+            anchors.leftMargin: 100
+            anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.top: parent.top
+            anchors.topMargin: 5
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 5
             initialItem: bgSettingsScreen
-            //
-            //
+            Transition {
+                id: enterAnim
+                YAnimator {
+                    from: -210; to: 0
+                    duration: 400; easing.type: Easing.OutCubic
+                }
+            }
+            Transition {
+                id: exitAnim
+                YAnimator {
+                    from: 0; to: -210
+                    duration: 400; easing.type: Easing.OutCubic
+                }
+            }
+            pushEnter: enterAnim; pushExit: exitAnim
+            popEnter: enterAnim; popExit: exitAnim
+            replaceEnter: enterAnim; replaceExit: exitAnim
             Item {
                 id: bgSettingsScreen
                 visible: false
+                x: 0; y: 0
                 onVisibleChanged: { bgSettingsBtn.highlighted = visible }
-                //
-                Text { text: "test" }
-                //
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 10
+                    Label {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "Choisir la couleur du fond :"
+                    }
+                    Rectangle {
+                        id: bgColorRect
+                        width: 20; height: 20
+                        border.color: "black"
+                        border.width: 1
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: { bgColSelector.open() }
+                        }
+                    }
+                    Button {
+                        height: settingsColumn.btnheight
+                        text: "Défaut"
+                        onClicked: {
+                            ocsettings.resetSetting("col_bg")
+                            var newcol = ocsettings.getColor("col_bg")
+                            bgColorRect.color = newcol
+                            bgColSelector.currentColor = newcol
+                            bgAll.color = newcol
+                        }
+                    }
+                }
+                ColorDialog {
+                    id: bgColSelector
+                    onAccepted: {
+                        bgColorRect.color = color
+                        bgAll.color = color
+                        ocsettings.setSetting('col_bg',color)
+                    }
+                }
             }
             Item {
                 id: secondsSettingsScreen
                 visible: false
+                x: 0; y: 0
                 onVisibleChanged: { secondsSettingsBtn.highlighted = visible }
                 //
+                Text { text: "test 2" }
                 //
+                Rectangle {
+                    color: "red"
+                    x: 20; y: 10; width: 20; height: 20
+                }
             }
             Item {
                 id: minutesSettingsScreen
                 visible: false
+                x: 0; y: 0
                 onVisibleChanged: { minutesSettingsBtn.highlighted = visible }
                 //
                 //
+                Text {
+                    text: "minutes settings"
+                }
             }
             Item {
-                id: hoursSCreen
+                id: hoursSettingsScreen
+                visible: false
+                onVisibleChanged: { hoursSettingsBtn.highlighted = visible }
+                //
+                //
+                Text {
+                    text: "hours settings"
+                }
+            }
+            Item {
+                id: weekSettingsScreen
+                visible: false
+                onVisibleChanged: { weekSettingsBtn.highlighted = visible }
+                //
+                //
+                Text {
+                    text: "week settings"
+                }
+            }
+            Item {
+                id: daysSettingsScreen
                 visible: false
                 //
                 //
+                Text {
+                    text: "days settings"
+                }
             }
             Item {
-                id: weekScreen
+                id: monthsSettingsScreen
                 visible: false
                 //
                 //
-            }
-            Item {
-                id: daysScreen
-                visible: false
-                //
-                //
-            }
-            Item {
-                id: monthsScreen
-                visible: false
-                //
-                //
+                Text {
+                    text: "months settings"
+                }
             }
         }
     }

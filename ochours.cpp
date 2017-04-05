@@ -42,22 +42,22 @@ void OChoursCog::paint(QPainter *painter)
     // painting arc
     if (m_value != 0) {
         painter->save();
-        size = int(m_settings->getSizeHoursArcDim()*scale);
-        thick = int(m_settings->getSizeHoursArcThick()*scale);
-        painter->setBrush(QBrush(m_settings->getColHoursArc()));
+        size = int(m_settings->getSize("size_hours_arc_dim")*scale);
+        thick = int(m_settings->getSize("size_hours_arc_thick")*scale);
+        painter->setBrush(QBrush(m_settings->getColor("col_hours_arc")));
         if (m_value == 12) painter->drawPath(ocDrawRing(size,thick));
         else painter->drawPath(ocDrawArc(size,thick,arc,m_value < 12));
         painter->restore();
     }
     // painting cog
     painter->save();
-    size = int(m_settings->getSizeHoursNeedleDim()*scale);
-    thick = int(m_settings->getSizeHoursNeedleThick()*scale);
-    int dist = int(m_settings->getSizeHoursNeedleDist()*scale);
+    size = int(m_settings->getSize("size_hours_needle_dim")*scale);
+    thick = int(m_settings->getSize("size_hours_needle_thick")*scale);
+    int dist = int(m_settings->getSize("size_hours_needle_dist")*scale);
     int dx = int(qCos(qDegreesToRadians(double(arc-90)))*dist);
     int dy = int(qSin(qDegreesToRadians(double(arc-90)))*dist);
     painter->translate(dx,dy);
-    painter->setBrush(QBrush(m_settings->getColHoursNeedle()));
+    painter->setBrush(QBrush(m_settings->getColor("col_hours_needle")));
     painter->drawPath(ocDrawRing(size,thick));
     painter->restore();
 }

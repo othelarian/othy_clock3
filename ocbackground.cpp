@@ -30,11 +30,11 @@ void OCbackground::paint(QPainter *painter)
     //
     // painting hours background
     painter->save();
-    size = int(m_settings->getSizeHoursBgDim()*scale);
-    thick = int(m_settings->getSizeHoursBgThick()*scale);
+    size = int(m_settings->getSize("size_hours_bg_dim")*scale);
+    thick = int(m_settings->getSize("size_hours_bg_thick")*scale);
     maxrect.setRect(-size/2,-size/2,size,size);
     minrect.setRect(-(size-thick)/2,-(size-thick)/2,size-thick,size-thick);
-    painter->setBrush(QBrush(m_settings->getColHoursBg()));
+    painter->setBrush(QBrush(m_settings->getColor("col_hours_bg")));
     QPainterPath hoursPath;
     hoursPath.addEllipse(maxrect);
     hoursPath.addEllipse(minrect);

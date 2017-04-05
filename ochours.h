@@ -55,7 +55,6 @@ public:
 private:
     OCsettings* m_settings;
     int m_value;
-    //
 };
 
 #endif // OCHOURS_H
