@@ -1,11 +1,12 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
-import Qt.labs.platform 1.0
+import Qt.labs.platform 1.0 as Lab
 
 import OCelements 1.0
 
 Window {
+    id: root
     visible: true
     width: 300; minimumWidth: 200
     height: 300; minimumHeight: 200
@@ -75,251 +76,149 @@ Window {
             //secondsTicks.value = dte.getSeconds()
         }
     }
-    // global background ########################
-    Rectangle { id: bgAll; anchors.fill: parent }
-    // elements background ######################
-    OCbackground { id: bgElt; anchors.fill: parent }
-    // months ###################################
-    OCmonthsCog { id: monthsCog; anchors.fill: parent }
-    OCmonthsTicks { id: monthsTicks; anchors.fill: parent }
-    // days #####################################
-    OCdaysCog { id: daysCog; anchors.fill: parent }
-    OCdaysTicks { id: daysTicks; anchors.fill: parent }
-    // week #####################################
-    OCweekCog { id: weekCog; anchors.fill: parent }
-    OCweekTicks { id: weekTicks; anchors.fill: parent }
-    // hours ####################################
-    OChoursCog { id: hoursCog; anchors.fill: parent }
-    OChoursTicks { id: hoursTicks; anchors.fill: parent }
-    // minutes ##################################
-    OCminutesCog { id: minutesCog; anchors.fill: parent }
-    OCminutesTicks { id: minutesTicks; anchors.fill: parent }
-    // seconds ##################################
-    OCsecondsTicks { id: secondsTicks; anchors.fill: parent }
-    OCsecondsCog { id: secondsCog; anchors.fill: parent }
-    // settings access ##########################
-    Rectangle {
-        id: settingsBtn
-        x: 5; y: 5; width: 10; height: 10
-        color: "#aaa"
-        opacity: 0.1
-        property bool opened: false
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onEntered: { settingsBtn.opacity = 1 }
-            onExited: { settingsBtn.opacity = 0.1 }
-            onClicked: { if (!settingsBtn.opened) settingsBtn.opened = true }
+    // main view ################################
+    StackView {
+        id: mainView
+        anchors.fill: parent
+        initialItem: clockView
+        // clock view ###############################
+        Item {
+            id: clockView
+            // global background ########################
+            Rectangle { id: bgAll; anchors.fill: parent }
+            // elements background ######################
+            OCbackground { id: bgElt; anchors.fill: parent }
+            // months ###################################
+            OCmonthsCog { id: monthsCog; anchors.fill: parent }
+            OCmonthsTicks { id: monthsTicks; anchors.fill: parent }
+            // days #####################################
+            OCdaysCog { id: daysCog; anchors.fill: parent }
+            OCdaysTicks { id: daysTicks; anchors.fill: parent }
+            // week #####################################
+            OCweekCog { id: weekCog; anchors.fill: parent }
+            OCweekTicks { id: weekTicks; anchors.fill: parent }
+            // hours ####################################
+            OChoursCog { id: hoursCog; anchors.fill: parent }
+            OChoursTicks { id: hoursTicks; anchors.fill: parent }
+            // minutes ##################################
+            OCminutesCog { id: minutesCog; anchors.fill: parent }
+            OCminutesTicks { id: minutesTicks; anchors.fill: parent }
+            // seconds ##################################
+            OCsecondsTicks { id: secondsTicks; anchors.fill: parent }
+            OCsecondsCog { id: secondsCog; anchors.fill: parent }
+        }
+        // background settings view #################
+        Item {
+            id: backgroundSettingView
+            visible: false
+            //
+            //
+            Text { text: "bg settings" }
+        }
+        // seconds settings view ####################
+        Item {
+            id: secondsSettingView
+            visible: false
+            //
+            //
+            Text { text: "seconds settings" }
+        }
+        // minutes settings view ####################
+        Item {
+            id: minutesSettingView
+            visible: false
+            //
+            //
+            Text { text: "minutes settings" }
+        }
+        // hours settings view ######################
+        Item {
+            id: hoursSettingView
+            visible: false
+            //
+            //
+            Text { text: "hours settings" }
+        }
+        // week settings view #######################
+        Item {
+            id: weekSettingView
+            visible: false
+            //
+            //
+            Text { text: "week settings" }
+        }
+        // days settings view #######################
+        Item {
+            id: daysSettingView
+            visible: false
+            //
+            //
+            Text { text: "days settings" }
+        }
+        // months settings view #####################
+        Item {
+            id: monthsSettingView
+            visible: false
+            //
+            //
+            Text { text: "months settings" }
+        }
+        // color selector view ######################
+        Item {
+            id: colorSelectorView
+            visible: false
+            //
+            //
+            Text { text: "color selector" }
         }
     }
-    // settings window ##########################
-    Window {
-        id: settings
-        visible: settingsBtn.opened
-        property int fwidth: 380
-        property int fheight: 210
-        width: fwidth; minimumWidth: fwidth; maximumWidth: fwidth
-        height: fheight; minimumHeight: fheight; maximumHeight: fheight
-        onVisibleChanged: {
-            // bg init
-            bgColorRect.color = ocsettings.getColor("col_bg")
-            bgColSelector.currentColor = "blue" //ocsettings.getColor("col_bg")
-            // seconds init
-            //
-            // minutes init
-            //
-            // hours init
-            //
-            // week init
-            //
-            // days init
-            //
-            // months init
-            //
-        }
-        onClosing: { settingsBtn.opened = false }
-        Column{
-            id: settingsColumn
-            y: 5; width: 100
-            spacing: 2
-            property int btnwidth: 80
-            property int btnheight: 20
-            Button {
-                id: bgSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Global BG"
-                onClicked: { if (!highlighted) settingsStack.replace(bgSettingsScreen) }
+    // drawer ###################################
+    Drawer {
+        id: drawer
+        width: root.width*0.6
+        height: root.height
+        ListView {
+            id: drawerList
+            currentIndex: 0
+            anchors.fill: parent
+            model: ListModel {
+                ListElement { name: "Horloge"; action: "clock" }
+                ListElement { name: "Fond"; action: "bg" }
+                ListElement { name: "Secondes"; action: "seconds" }
+                ListElement { name: "Minutes"; action: "minutes" }
+                ListElement { name: "Heures"; action: "hours" }
+                ListElement { name: "Semaine"; action: "week" }
+                ListElement { name: "Jours"; action: "days" }
+                ListElement { name: "Mois"; action: "months" }
             }
-            Button {
-                id: secondsSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Seconds"
-                onClicked: { if (!highlighted) settingsStack.replace(secondsSettingsScreen) }
-            }
-            Button {
-                id: minutesSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Minutes"
-                onClicked: { if (!highlighted) settingsStack.replace(minutesSettingsScreen) }
-            }
-            Button {
-                id: hoursSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Hours"
-                onClicked: { if (!highlighted) settingsStack.replace(hoursSettingsScreen) }
-            }
-            Button {
-                id: weekSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Week"
-                onClicked: { if (!highlighted) settingsStack.replace(weekSettingsScreen) }
-            }
-            Button {
-                id: daysSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Days"
-                onClicked: { if (!highlighted) settingsStack.replace(daysSettingsScreen) }
-            }
-            Button {
-                id: monthsSettingsBtn
-                width: settingsColumn.btnwidth; height: settingsColumn.btnheight
-                text: "Months"
-                onClicked: { if (!highlighted) settingsStack.replace(monthsSettingsScreen) }
-            }
-        }
-        StackView {
-            id: settingsStack
-            anchors.left: parent.left
-            anchors.leftMargin: 100
-            anchors.right: parent.right
-            anchors.rightMargin: 5
-            anchors.top: parent.top
-            anchors.topMargin: 5
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 5
-            initialItem: bgSettingsScreen
-            Transition {
-                id: enterAnim
-                YAnimator {
-                    from: -210; to: 0
-                    duration: 400; easing.type: Easing.OutCubic
-                }
-            }
-            Transition {
-                id: exitAnim
-                YAnimator {
-                    from: 0; to: -210
-                    duration: 400; easing.type: Easing.OutCubic
-                }
-            }
-            pushEnter: enterAnim; pushExit: exitAnim
-            popEnter: enterAnim; popExit: exitAnim
-            replaceEnter: enterAnim; replaceExit: exitAnim
-            Item {
-                id: bgSettingsScreen
-                visible: false
-                x: 0; y: 0
-                onVisibleChanged: { bgSettingsBtn.highlighted = visible }
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 10
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: "Choisir la couleur du fond :"
+            delegate: ItemDelegate {
+                width: parent.width
+                text: model.name
+                highlighted: ListView.isCurrentItem
+                onClicked: {
+                    var newview
+                    var finish = false
+                    switch (action) {
+                    case "clock":
+                        if (drawerList.currentIndex != 0) { mainView.pop() }
+                        break
+                    case "bg": finish = true; newview = backgroundSettingView; break
+                    case "seconds": finish = true; newview = secondsSettingView; break
+                    case "minutes": finish = true; newview = minutesSettingView; break
+                    case "hours": finish = true; newview = hoursSettingView; break
+                    case "week": finish = true; newview = weekSettingView; break
+                    case "days": finish = true; newview = daysSettingView; break
+                    case "months": finish = true; newview = monthsSettingView; break
                     }
-                    Rectangle {
-                        id: bgColorRect
-                        width: 20; height: 20
-                        border.color: "black"
-                        border.width: 1
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: { bgColSelector.open() }
-                        }
+                    if (finish) {
+                        //
+                        // TODO : init the settings selected
+                        //
+                        if (drawerList.currentIndex == 0) { mainView.push(newview) }
+                        else { mainView.replace(newview) }
                     }
-                    Button {
-                        height: settingsColumn.btnheight
-                        text: "Défaut"
-                        onClicked: {
-                            ocsettings.resetSetting("col_bg")
-                            var newcol = ocsettings.getColor("col_bg")
-                            bgColorRect.color = newcol
-                            bgColSelector.currentColor = newcol
-                            bgAll.color = newcol
-                        }
-                    }
-                }
-                ColorDialog {
-                    id: bgColSelector
-                    onAccepted: {
-                        bgColorRect.color = color
-                        bgAll.color = color
-                        ocsettings.setSetting('col_bg',color)
-                    }
-                }
-            }
-            Item {
-                id: secondsSettingsScreen
-                visible: false
-                x: 0; y: 0
-                onVisibleChanged: { secondsSettingsBtn.highlighted = visible }
-                //
-                Text { text: "test 2" }
-                //
-                Rectangle {
-                    color: "red"
-                    x: 20; y: 10; width: 20; height: 20
-                }
-            }
-            Item {
-                id: minutesSettingsScreen
-                visible: false
-                x: 0; y: 0
-                onVisibleChanged: { minutesSettingsBtn.highlighted = visible }
-                //
-                //
-                Text {
-                    text: "minutes settings"
-                }
-            }
-            Item {
-                id: hoursSettingsScreen
-                visible: false
-                onVisibleChanged: { hoursSettingsBtn.highlighted = visible }
-                //
-                // TODO : bticks & fticks actives
-                //
-                //
-                Text {
-                    text: "hours settings"
-                }
-            }
-            Item {
-                id: weekSettingsScreen
-                visible: false
-                onVisibleChanged: { weekSettingsBtn.highlighted = visible }
-                //
-                //
-                Text {
-                    text: "week settings"
-                }
-            }
-            Item {
-                id: daysSettingsScreen
-                visible: false
-                //
-                //
-                Text {
-                    text: "days settings"
-                }
-            }
-            Item {
-                id: monthsSettingsScreen
-                visible: false
-                //
-                //
-                Text {
-                    text: "months settings"
+                    drawerList.currentIndex = index
+                    drawer.close()
                 }
             }
         }
