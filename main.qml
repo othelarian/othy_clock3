@@ -4,13 +4,15 @@ import QtQuick.Controls 2.1
 import Qt.labs.platform 1.0 as Lab
 
 import OCelements 1.0
+import "Components"
+import "script.js" as Script
 
 Window {
     id: root
     visible: true
     width: 300; minimumWidth: 200
     height: 300; minimumHeight: 200
-    title: qsTr("Othy clock 3")
+    title: "Othy Clock 3"
     // properties ###############################
     //
     property int testi
@@ -21,25 +23,7 @@ Window {
     property int day: -1
     property int month: -1
     // launch time ##############################
-    Component.onCompleted: {
-        //
-        testi = 0
-        //
-        bgAll.color = ocsettings.getColor("col_bg")
-        var dte = new Date();
-        //
-        //
-        hoursTicks.visible = false
-        //
-        hoursCog.value = dte.getHours()
-        hour = dte.getHours()
-        //
-        //
-        minutesTicks.visible = false
-        minutesCog.visible = false
-        //
-        timer.start()
-    }
+    Component.onCompleted: Script.init()
     // timer ####################################
     Timer {
         id: timer; interval: 1000; running: false; repeat: true
@@ -108,12 +92,15 @@ Window {
             OCsecondsCog { id: secondsCog; anchors.fill: parent }
         }
         // background settings view #################
-        Item {
+        SettingsView {
             id: backgroundSettingView
-            visible: false
+            title: "Fond"
             //
             //
-            Text { text: "bg settings" }
+            listmodel: ListModel {
+                ListElement { label: "test 1"; type: "color" }
+                ListElement { label: "test 2"; type: "number" }
+            }
         }
         // seconds settings view ####################
         Item {

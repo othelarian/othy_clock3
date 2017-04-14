@@ -46,3 +46,8 @@ HEADERS += \
     ocweek.h \
     ocdays.h \
     ocmonths.h
+
+DISTFILES += \
+    Components/SettingsView.qml \
+    script.js \
+    Components/ColorButton.qml
