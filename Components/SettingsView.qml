@@ -44,21 +44,25 @@ Item {
     ListView {
         id: optionsList
         anchors.top: rowBtns.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: (parent.width < 400)? parent.width-20 : 380
         clip: true
         spacing: 5
         model: listmodel
         delegate: Item {
             height: 30
             width: optionsList.width
+            Rectangle {
+                color: "#f5f5f5"
+                anchors.fill: parent
+            }
             Label {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                anchors.leftMargin: 0
-                width: parent.width-135
+                anchors.leftMargin: 5
+                width: parent.width-130
                 wrapMode: TextInput.WordWrap
                 text: label
             }
@@ -68,20 +72,23 @@ Item {
                 width: 120
                 height: parent.height
                 ColorButton {
-                    //
                     visible: (type == "color")? true : false
                     //
-                    //anchors.horizontalCenter: parent.horizontalCenter
                     anchors.centerIn: parent
                     //
                 }
                 SpinBox {
-                    //
                     visible: (type == "number")? true : false
                     //
                     from: 0; to: 300
                     height: 30
                     width: 120
+                    //
+                }
+                Switch {
+                    visible: (type == "bool")? true : false
+                    //
+                    anchors.centerIn: parent
                     //
                 }
             }

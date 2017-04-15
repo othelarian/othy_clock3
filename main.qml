@@ -98,8 +98,12 @@ Window {
             //
             //
             listmodel: ListModel {
-                ListElement { label: "test 1"; type: "color" }
-                ListElement { label: "test 2"; type: "number" }
+                ListElement {
+                    label: "Couleur du fond :"
+                    type: "color"
+                    //
+                    //
+                }
             }
         }
         // seconds settings view ####################
@@ -119,12 +123,13 @@ Window {
             Text { text: "minutes settings" }
         }
         // hours settings view ######################
-        Item {
+        SettingsView {
             id: hoursSettingView
-            visible: false
             //
             //
-            Text { text: "hours settings" }
+            listmodel: ListModel {
+                //ListElement { label: "color"; }
+            }
         }
         // week settings view #######################
         Item {
@@ -155,14 +160,178 @@ Window {
             id: colorSelectorView
             visible: false
             //
+            property bool colorChanged: false
             //
-            Text { text: "color selector" }
+            Label {
+                id: titleColSel
+                anchors.top: parent.top
+                anchors.margins: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.bold: true
+                font.pointSize: 14
+                text: "Couleur :"
+            }
+            Row {
+                id: colorsShowRow
+                anchors.top: titleColSel.bottom
+                anchors.margins: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 10
+                Column {
+                    spacing: 10
+                    Label {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "Couleur courante :"
+                        wrapMode: TextInput.WordWrap
+                    }
+                    Rectangle {
+                        id: currColorRect
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: 50; height: 30
+                        border.color: "black"
+                        border.width: 1
+                    }
+                }
+                Column {
+                    spacing: 10
+                    Label {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "Nouvelle couleur :"
+                        wrapMode: TextInput.WordWrap
+                    }
+                    Rectangle {
+                        id: newColorRect
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: 50; height: 30
+                        border.color: "black"
+                        border.width: 1
+                    }
+                }
+            }
+            Row {
+                id: colbtnsRow
+                anchors.top: colorsShowRow.bottom
+                anchors.margins: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                //
+                spacing: 10
+                //
+                Button {
+                    //
+                    text: "Valider"
+                    enabled: colorSelectorView.colorChanged
+                    height: 30
+                    //
+                }
+                Button {
+                    //
+                    text: "Annuler"
+                    height: 30
+                    //
+                }
+            }
+            Row {
+                id: modeColorRow
+                anchors.top: colbtnsRow.bottom
+                anchors.margins: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 10
+                RadioButton {
+                    id: colRgbMode
+                    text: "RGB"
+                    height: 20
+                    checked: true
+                    onCheckedChanged: {
+                        //
+                        //
+                    }
+                }
+                RadioButton {
+                    id: colHslMode
+                    text: "HSL"
+                    height: 20
+                    onCheckedChanged: {
+                        //
+                        //
+                    }
+                }
+            }
+            Column {
+                //
+                width: (parent.width < 350)? parent.width-20 : 330
+                anchors.top: modeColorRow.bottom
+                anchors.margins: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                //
+                spacing: 10
+                //
+                Item {
+                    //
+                    //
+                    Label {
+                        //
+                        //
+                        text: "G"
+                        //
+                    }
+                }
+                Item {
+                    //
+                    //
+                }
+                Item {
+                    //
+                    //
+                }
+                Item {
+                    height: 25
+                    //
+                    width: parent.width
+                    //
+                    ColorSlider {
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                        //
+                        width: parent.width-60
+                        //
+                    }
+                    Label {
+                        //
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        width: 30
+                        //
+                        background: Rectangle {
+                            color: "#f2f2f2"
+                            anchors.fill: parent
+                            border.color: "black"
+                            border.width: 1
+                        }
+                        //
+                        text: "999"
+                        height: 20
+                    }
+                    Label {
+                        //
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 10
+                        //
+                        text: "A"
+                    }
+                }
+            }
         }
     }
     // drawer ###################################
     Drawer {
         id: drawer
-        width: root.width*0.6
+        width: (root.width < 300)? root.width*0.7 : 210
         height: root.height
         ListView {
             id: drawerList
@@ -182,31 +351,7 @@ Window {
                 width: parent.width
                 text: model.name
                 highlighted: ListView.isCurrentItem
-                onClicked: {
-                    var newview
-                    var finish = false
-                    switch (action) {
-                    case "clock":
-                        if (drawerList.currentIndex != 0) { mainView.pop() }
-                        break
-                    case "bg": finish = true; newview = backgroundSettingView; break
-                    case "seconds": finish = true; newview = secondsSettingView; break
-                    case "minutes": finish = true; newview = minutesSettingView; break
-                    case "hours": finish = true; newview = hoursSettingView; break
-                    case "week": finish = true; newview = weekSettingView; break
-                    case "days": finish = true; newview = daysSettingView; break
-                    case "months": finish = true; newview = monthsSettingView; break
-                    }
-                    if (finish) {
-                        //
-                        // TODO : init the settings selected
-                        //
-                        if (drawerList.currentIndex == 0) { mainView.push(newview) }
-                        else { mainView.replace(newview) }
-                    }
-                    drawerList.currentIndex = index
-                    drawer.close()
-                }
+                onClicked: Script.drawerActive(index,action)
             }
         }
     }

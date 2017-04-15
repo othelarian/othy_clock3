@@ -4,5 +4,6 @@
         <file>Components/ColorButton.qml</file>
         <file>Components/SettingsView.qml</file>
         <file>script.js</file>
+        <file>Components/ColorSlider.qml</file>
     </qresource>
 </RCC>

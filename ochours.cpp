@@ -9,6 +9,7 @@ OChoursTicks::OChoursTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
 
 void OChoursTicks::paint(QPainter *painter)
 {
+    if (!m_settings->getActive("active_hours_fticks") && !m_settings->getActive("ative_hours_bticks")) return;
     // set basic parameters
     int dim = qMin(width(),height());
     double scale = dim/300.0;
@@ -17,8 +18,23 @@ void OChoursTicks::paint(QPainter *painter)
     painter->translate(center);
     painter->setPen(Qt::NoPen);
     // painting ticks
+    painter->save();
     //
+    painter->setBrush(QBrush(QColor(0,255,0)));
     //
+    QPainterPath path;
+    for (int i=0;i<12;i++) {
+        //
+        //path
+        path.moveTo(0,-100);
+        //
+        //path.moveTo();
+        //
+        //painter->addRect();
+        //
+    }
+    //
+    painter->restore();
 }
 
 // OChoursCog methods ###################

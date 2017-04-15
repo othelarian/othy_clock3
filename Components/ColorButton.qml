@@ -11,6 +11,14 @@ Item {
         border.width: 1
         color: "white"
         //
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                //
+                mainView.push(colorSelectorView)
+                //
+            }
+        }
         Rectangle {
             anchors.fill: parent
             anchors.margins: 5
