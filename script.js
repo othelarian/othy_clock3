@@ -50,3 +50,32 @@ function drawerActive(index,action) {
     drawerList.currentIndex = index
     drawer.close()
 }
+
+function colorModeSwitch() {
+    var mode = ""
+    if (colRgbMode.checked) {
+        mode = "RGB"
+        colorValue1Slider.frontcolor = "#f00"
+        colorValue1Slider.backcolor = "#ddd"
+        colorValue2Slider.frontcolor = "#0f0"
+        colorValue2Slider.backcolor = "#ddd"
+        colorValue3Slider.frontcolor = "#00f"
+        colorValue3Slider.backcolor = "#ddd"
+        //
+        //values
+        //
+    }
+    else {
+        mode = "HSL"
+        //
+        colorValue1Slider.frontcolor = "transparent"
+        //
+        colorValue2Slider.frontcolor = "transparent"
+        //
+        colorValue3Slider.frontcolor = "transparent"
+        //
+    }
+    colorValue1Lab.text = mode[0]
+    colorValue2Lab.text = mode[1]
+    colorValue3Lab.text = mode[2]
+}

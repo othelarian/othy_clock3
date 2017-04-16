@@ -241,19 +241,12 @@ Window {
                     text: "RGB"
                     height: 20
                     checked: true
-                    onCheckedChanged: {
-                        //
-                        //
-                    }
+                    onCheckedChanged: Script.colorModeSwitch()
                 }
                 RadioButton {
                     id: colHslMode
                     text: "HSL"
                     height: 20
-                    onCheckedChanged: {
-                        //
-                        //
-                    }
                 }
             }
             Column {
@@ -266,62 +259,160 @@ Window {
                 spacing: 10
                 //
                 Item {
-                    //
-                    //
-                    Label {
-                        //
-                        //
-                        text: "G"
-                        //
-                    }
-                }
-                Item {
-                    //
-                    //
-                }
-                Item {
-                    //
-                    //
-                }
-                Item {
                     height: 25
-                    //
                     width: parent.width
-                    //
                     ColorSlider {
+                        id: colorValue1Slider
                         anchors.left: parent.left
                         anchors.leftMargin: 5
                         anchors.verticalCenter: parent.verticalCenter
-                        //
                         width: parent.width-60
-                        //
+                        frontcolor: "#f00"
+                        onValueChanged: {
+                            //
+                            //
+                        }
                     }
                     Label {
-                        //
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        width: 30
-                        //
+                        width: 30; height: 20
                         background: Rectangle {
                             color: "#f2f2f2"
                             anchors.fill: parent
                             border.color: "black"
                             border.width: 1
                         }
-                        //
-                        text: "999"
-                        height: 20
+                        text: Math.round(colorValue1Slider.value*100)/100
                     }
                     Label {
-                        //
+                        id: colorValue1Lab
                         anchors.right: parent.right
                         anchors.rightMargin: 0
                         anchors.verticalCenter: parent.verticalCenter
                         width: 10
+                        text: "R"
+                    }
+                }
+                Item {
+                    height: 25
+                    width: parent.width
+                    ColorSlider {
+                        id: colorValue2Slider
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width - 60
+                        frontcolor: "#0f0"
+                        onValueChanged: {
+                            //
+                            //
+                        }
+                    }
+                    Label {
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        width: 30; height: 20
+                        background: Rectangle {
+                            color: "#f2f2f2"
+                            anchors.fill: parent
+                            border.color: "black"
+                            border.width: 1
+                        }
+                        text: Math.round(colorValue2Slider.value*100)/100
+                    }
+                    Label {
+                        id: colorValue2Lab
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 10
+                        text: "G"
+                    }
+                }
+                Item {
+                    height: 25
+                    width: parent.width
+                    ColorSlider {
+                        id: colorValue3Slider
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width - 60
+                        frontcolor: "#00f"
+                        onValueChanged: {
+                            //
+                            //
+                        }
+                    }
+                    Label {
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        width: 30; height: 20
+                        background: Rectangle {
+                            color: "#f2f2f2"
+                            anchors.fill: parent
+                            border.color: "black"
+                            border.width: 1
+                        }
+                        text: Math.round(colorValue3Slider.value*100)/100
+                    }
+                    Label {
+                        id: colorValue3Lab
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 10
+                        text: "B"
+                    }
+                }
+                Item {
+                    height: 25
+                    width: parent.width
+                    ColorSlider {
+                        id: colorAlphaSlider
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width-60
+                        onValueChanged: {
+                            //
+                            //
+                        }
                         //
+                        //
+                        sliderBg.gradient: null
+                        //
+                    }
+                    Label {
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        width: 30; height: 20
+                        background: Rectangle {
+                            color: "#f2f2f2"
+                            anchors.fill: parent
+                            border.color: "black"
+                            border.width: 1
+                        }
+                        text: Math.round(colorAlphaSlider.value*100)/100
+                    }
+                    Label {
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 10
                         text: "A"
                     }
                 }
