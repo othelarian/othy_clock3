@@ -6,6 +6,8 @@ Slider {
     property color backcolor: "#ddd"
     property color frontcolor: "#999"
     property alias sliderBg: sliderBg
+    stepSize: 0.001
+    snapMode: Slider.SnapAlways
     background: Rectangle {
         id: sliderBg
         x: colorSlider.leftPadding

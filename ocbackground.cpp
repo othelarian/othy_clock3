@@ -43,7 +43,10 @@ void OCbackground::paint(QPainter *painter)
         painter->restore();
     }
     // painting minutes background
-    //
+    if (m_settings->getActive("active_minutes_bg")) {
+        //
+        //
+    }
     // painting seconds background
     //
     //

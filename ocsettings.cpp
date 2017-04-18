@@ -62,9 +62,7 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // week actives
     //
     // hours actives
-    //
-    m_default["active_hours_bg"] = false;
-    //
+    m_default["active_hours_bg"] = true;
     m_default["active_hours_arc"] = true;
     m_default["active_hours_needle"] = true;
     //
@@ -72,6 +70,7 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     m_default["active_hours_bticks"] = true;
     //
     // minutes actives
+    m_default["active_minutes_bg"] = true;
     //
     // seconds actives
     //

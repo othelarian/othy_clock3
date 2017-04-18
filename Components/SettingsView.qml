@@ -54,6 +54,8 @@ Item {
         delegate: Item {
             height: 30
             width: optionsList.width
+            //
+            //
             Rectangle {
                 color: "#f5f5f5"
                 anchors.fill: parent
@@ -73,9 +75,10 @@ Item {
                 height: parent.height
                 ColorButton {
                     visible: (type == "color")? true : false
-                    //
+                    colorsetting: setting
+                    colorbtn: (type == "color")? ocsettings.getColor(setting) : "black"
+                    coloralpha: (type == "color")? alpha : false
                     anchors.centerIn: parent
-                    //
                 }
                 SpinBox {
                     visible: (type == "number")? true : false

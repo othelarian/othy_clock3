@@ -22,6 +22,8 @@ Window {
     property int weekday: -1
     property int day: -1
     property int month: -1
+    // functions accessors ######################
+    function initColorSelector (setting,alpha) { Script.initColorSelector(setting,alpha) }
     // launch time ##############################
     Component.onCompleted: Script.init()
     // timer ####################################
@@ -95,15 +97,8 @@ Window {
         SettingsView {
             id: backgroundSettingView
             title: "Fond"
-            //
-            //
             listmodel: ListModel {
-                ListElement {
-                    label: "Couleur du fond :"
-                    type: "color"
-                    //
-                    //
-                }
+                ListElement { label: "Couleur du fond :"; type: "color"; setting: "col_bg"; alpha: false }
             }
         }
         // seconds settings view ####################
@@ -128,14 +123,14 @@ Window {
             //
             //
             listmodel: ListModel {
-                ListElement { label: "Arc actif :"; type: "bool" }
-                ListElement { label: "Couleur de l'arc :"; type: "color" }
-                ListElement { label: "Taille de l'arc :"; type: "number" }
-                ListElement { label: "Épaisseur de l'arc :"; type: "number" }
-                ListElement { label: "Arc de fond actif :"; type: "bool" }
-                ListElement { label: "Couleur de l'arc de fond :"; type: "color" }
-                ListElement { label: "Taille de l'arc de fond :"; type: "number" }
-                ListElement { label: "Épaisseur de l'arc de fond :"; type: "number" }
+                ListElement { label: "Arc actif :"; type: "bool"; setting: "" }
+                ListElement { label: "Couleur de l'arc :"; type: "color"; setting: ""; alpha: true }
+                ListElement { label: "Taille de l'arc :"; type: "number"; setting: "" }
+                ListElement { label: "Épaisseur de l'arc :"; type: "number"; setting: "" }
+                ListElement { label: "Arc de fond actif :"; type: "bool"; setting: "" }
+                ListElement { label: "Couleur de l'arc de fond :"; type: "color"; setting: ""; alpha: true }
+                ListElement { label: "Taille de l'arc de fond :"; type: "number"; setting: "" }
+                ListElement { label: "Épaisseur de l'arc de fond :"; type: "number"; setting: "" }
                 //
                 //
             }
@@ -171,6 +166,10 @@ Window {
             //
             property bool colorChanged: false
             //
+            property color backcolor
+            property color activecolor
+            property color currentcolor
+            property bool alpha
             Label {
                 id: titleColSel
                 anchors.top: parent.top
@@ -199,6 +198,17 @@ Window {
                         width: 50; height: 30
                         border.color: "black"
                         border.width: 1
+                        color: "white"
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.margins: 5
+                            color: colorSelectorView.backcolor
+                        }
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.margins: 5
+                            color: colorSelectorView.currentcolor
+                        }
                     }
                 }
                 Column {
@@ -214,6 +224,17 @@ Window {
                         width: 50; height: 30
                         border.color: "black"
                         border.width: 1
+                        color: "white"
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.margins: 5
+                            color: colorSelectorView.backcolor
+                        }
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.margins: 5
+                            color: colorSelectorView.activecolor
+                        }
                     }
                 }
             }
@@ -222,22 +243,17 @@ Window {
                 anchors.top: colorsShowRow.bottom
                 anchors.margins: 10
                 anchors.horizontalCenter: parent.horizontalCenter
-                //
                 spacing: 10
-                //
                 Button {
-                    //
                     text: "Valider"
                     enabled: colorSelectorView.colorChanged
                     height: 30
-                    //
+                    onClicked: {
+                        //
+                        //
+                    }
                 }
-                Button {
-                    //
-                    text: "Annuler"
-                    height: 30
-                    //
-                }
+                Button { text: "Annuler"; height: 30; onClicked: mainView.pop() }
             }
             Row {
                 id: modeColorRow
@@ -429,9 +445,7 @@ Window {
                     }
                 }
                 Item {
-                    //
-                    // TODO : change visibility
-                    //
+                    visible: colorSelectorView.alpha
                     height: 25
                     width: parent.width
                     ColorSlider {
@@ -472,6 +486,7 @@ Window {
         id: drawer
         width: (root.width < 300)? root.width*0.7 : 210
         height: root.height
+        //
         ListView {
             id: drawerList
             currentIndex: 0

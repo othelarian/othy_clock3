@@ -28,11 +28,18 @@ function timing() {
 function drawerActive(index,action) {
     var newview
     var finish = true
+    if (mainView.currentItem == colorSelectorView) { mainView.pop() }
     switch (action) {
     case "clock":
         if (drawerList.currentIndex != 0) { mainView.pop() }
         finish = false; break
-    case "bg": newview = backgroundSettingView; break
+    case "bg":
+        //
+        // TODO : init the bg settings
+        //
+        //
+        //
+        newview = backgroundSettingView; break
     case "seconds": newview = secondsSettingView; break
     case "minutes": newview = minutesSettingView; break
     case "hours": newview = hoursSettingView; break
@@ -49,6 +56,14 @@ function drawerActive(index,action) {
     }
     drawerList.currentIndex = index
     drawer.close()
+}
+
+function initColorSelector(setting,alpha) {
+    colorSelectorView.backcolor = ocsettings.getColor("col_bg")
+    colorSelectorView.activecolor = ocsettings.getColor(setting)
+    //
+    colorSelectorView.alpha = alpha
+    //
 }
 
 function colorModeSwitch() {
