@@ -93,6 +93,11 @@ Item {
                 }
             }
         }
-        ScrollIndicator.vertical: ScrollIndicator {}
+        ScrollIndicator.vertical: ScrollIndicator {
+            parent: optionsList.parent
+            anchors.top: optionsList.top
+            anchors.bottom: optionsList.bottom
+            anchors.left: optionsList.right
+        }
     }
 }

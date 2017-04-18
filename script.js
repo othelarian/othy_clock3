@@ -62,20 +62,28 @@ function colorModeSwitch() {
         colorValue3Slider.frontcolor = "#00f"
         colorValue3Slider.backcolor = "#ddd"
         //
-        //values
+        // TODO : values
         //
     }
     else {
         mode = "HSL"
-        //
         colorValue1Slider.frontcolor = "transparent"
-        //
+        colorValue1Slider.backcolor = "transparent"
         colorValue2Slider.frontcolor = "transparent"
-        //
+        colorValue2Slider.backcolor = "transparent"
         colorValue3Slider.frontcolor = "transparent"
+        colorValue3Slider.backcolor = "transparent"
+        //
+        // TODO : values
         //
     }
     colorValue1Lab.text = mode[0]
     colorValue2Lab.text = mode[1]
     colorValue3Lab.text = mode[2]
+}
+
+function updateGradients() {
+    //
+    console.log("update gradients")
+    //
 }

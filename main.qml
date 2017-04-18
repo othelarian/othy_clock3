@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
-import Qt.labs.platform 1.0 as Lab
+import QtGraphicalEffects 1.0
 
 import OCelements 1.0
 import "Components"
@@ -128,7 +128,16 @@ Window {
             //
             //
             listmodel: ListModel {
-                //ListElement { label: "color"; }
+                ListElement { label: "Arc actif :"; type: "bool" }
+                ListElement { label: "Couleur de l'arc :"; type: "color" }
+                ListElement { label: "Taille de l'arc :"; type: "number" }
+                ListElement { label: "Épaisseur de l'arc :"; type: "number" }
+                ListElement { label: "Arc de fond actif :"; type: "bool" }
+                ListElement { label: "Couleur de l'arc de fond :"; type: "color" }
+                ListElement { label: "Taille de l'arc de fond :"; type: "number" }
+                ListElement { label: "Épaisseur de l'arc de fond :"; type: "number" }
+                //
+                //
             }
         }
         // week settings view #######################
@@ -250,43 +259,57 @@ Window {
                 }
             }
             Column {
-                //
                 width: (parent.width < 350)? parent.width-20 : 330
                 anchors.top: modeColorRow.bottom
                 anchors.margins: 10
                 anchors.horizontalCenter: parent.horizontalCenter
-                //
-                spacing: 10
-                //
+                spacing: 8
                 Item {
                     height: 25
                     width: parent.width
+                    LinearGradient {
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5 + colorValue1Slider.leftPadding
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width - 80 - colorValue1Slider.leftPadding - colorValue1Slider.rightPadding
+                        height: 6
+                        start: Qt.point(0,0)
+                        end: Qt.point(width,0)
+                        gradient: Gradient {
+                            GradientStop { position: 0; color: Qt.rgba(1,0,0,1) }
+                            GradientStop { position: 0.167; color: Qt.rgba(1,1,0,1) }
+                            GradientStop { position: 0.333; color: Qt.rgba(0,1,0,1) }
+                            GradientStop { position: 0.500; color: Qt.rgba(0,1,1,1) }
+                            GradientStop { position: 0.667; color: Qt.rgba(0,0,1,1) }
+                            GradientStop { position: 0.833; color: Qt.rgba(1,0,1,1) }
+                            GradientStop { position: 1; color: Qt.rgba(1,0,0,1) }
+                        }
+                    }
                     ColorSlider {
                         id: colorValue1Slider
                         anchors.left: parent.left
                         anchors.leftMargin: 5
                         anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width-60
+                        width: parent.width-80
                         frontcolor: "#f00"
                         onValueChanged: {
-                            //
-                            //
+                            colorValue1Edit.text = Math.round(value*1000)/1000
+                            Script.updateGradients()
                         }
                     }
-                    Label {
+                    TextField {
+                        id: colorValue1Edit
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        width: 30; height: 20
-                        background: Rectangle {
-                            color: "#f2f2f2"
-                            anchors.fill: parent
-                            border.color: "black"
-                            border.width: 1
+                        width: 50; height: 25
+                        validator: DoubleValidator {
+                            notation: DoubleValidator.StandardNotation
+                            decimals: 3; bottom: 0.0; top: 1.0
                         }
-                        text: Math.round(colorValue1Slider.value*100)/100
+                        onEditingFinished: { colorValue1Slider.value = parseFloat(text) }
                     }
                     Label {
                         id: colorValue1Lab
@@ -300,32 +323,47 @@ Window {
                 Item {
                     height: 25
                     width: parent.width
+                    LinearGradient {
+                        id: colorValue2Gradient
+                        property color firstcolor: "white"
+                        property color lastcolor: "black"
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5 + colorValue2Slider.leftPadding
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width - 80 - colorValue2Slider.leftPadding - colorValue2Slider.rightPadding
+                        height: 6
+                        start: Qt.point(0,0)
+                        end: Qt.point(width,0)
+                        gradient: Gradient {
+                            GradientStop { position: 0; color: colorValue2Gradient.firstcolor }
+                            GradientStop { position: 1; color: colorValue2Gradient.lastcolor }
+                        }
+                    }
                     ColorSlider {
                         id: colorValue2Slider
                         anchors.left: parent.left
                         anchors.leftMargin: 5
                         anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width - 60
+                        width: parent.width - 80
                         frontcolor: "#0f0"
                         onValueChanged: {
-                            //
-                            //
+                            colorValue2Edit.text = Math.round(value*1000)/1000
+                            Script.updateGradients()
                         }
                     }
-                    Label {
+                    TextField {
+                        id: colorValue2Edit
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        width: 30; height: 20
-                        background: Rectangle {
-                            color: "#f2f2f2"
-                            anchors.fill: parent
-                            border.color: "black"
-                            border.width: 1
+                        width: 50; height: 25
+                        validator: DoubleValidator {
+                            notation: DoubleValidator.StandardNotation
+                            decimals: 3; bottom: 0.0; top: 1.0
                         }
-                        text: Math.round(colorValue2Slider.value*100)/100
+                        onEditingFinished: { colorValue2Slider.value = parseFloat(text) }
                     }
                     Label {
                         id: colorValue2Lab
@@ -339,32 +377,47 @@ Window {
                 Item {
                     height: 25
                     width: parent.width
+                    LinearGradient {
+                        id: colorValue3Gradient
+                        property color firstcolor: "white"
+                        property color lastcolor: "black"
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5 + colorValue3Slider.leftPadding
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width - 80 - colorValue3Slider.leftPadding - colorValue3Slider.rightPadding
+                        height: 6
+                        start: Qt.point(0,0)
+                        end: Qt.point(width,0)
+                        gradient: Gradient {
+                            GradientStop { position: 0; color: colorValue3Gradient.firstcolor }
+                            GradientStop { position: 1; color: colorValue3Gradient.lastcolor }
+                        }
+                    }
                     ColorSlider {
                         id: colorValue3Slider
                         anchors.left: parent.left
                         anchors.leftMargin: 5
                         anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width - 60
+                        width: parent.width - 80
                         frontcolor: "#00f"
                         onValueChanged: {
-                            //
-                            //
+                            colorValue3Edit.text = Math.round(value*1000)/1000
+                            Script.updateGradients()
                         }
                     }
-                    Label {
+                    TextField {
+                        id: colorValue3Edit
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        width: 30; height: 20
-                        background: Rectangle {
-                            color: "#f2f2f2"
-                            anchors.fill: parent
-                            border.color: "black"
-                            border.width: 1
+                        width: 50; height: 25
+                        validator: DoubleValidator {
+                            notation: DoubleValidator.StandardNotation
+                            decimals: 3; bottom: 0.0; top: 1.0
                         }
-                        text: Math.round(colorValue3Slider.value*100)/100
+                        onEditingFinished: { colorValue3Slider.value = parseFloat(text) }
                     }
                     Label {
                         id: colorValue3Lab
@@ -376,6 +429,9 @@ Window {
                     }
                 }
                 Item {
+                    //
+                    // TODO : change visibility
+                    //
                     height: 25
                     width: parent.width
                     ColorSlider {
@@ -383,30 +439,22 @@ Window {
                         anchors.left: parent.left
                         anchors.leftMargin: 5
                         anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width-60
-                        onValueChanged: {
-                            //
-                            //
-                        }
-                        //
-                        //
-                        sliderBg.gradient: null
-                        //
+                        width: parent.width-80
+                        onValueChanged: { colorAlphaEdit.text = Math.round(value*1000)/1000 }
                     }
-                    Label {
+                    TextField {
+                        id: colorAlphaEdit
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.verticalCenter: parent.verticalCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        width: 30; height: 20
-                        background: Rectangle {
-                            color: "#f2f2f2"
-                            anchors.fill: parent
-                            border.color: "black"
-                            border.width: 1
+                        width: 50; height: 25
+                        validator: DoubleValidator {
+                            notation: DoubleValidator.StandardNotation
+                            decimals: 3; bottom: 0.0; top: 1.0
                         }
-                        text: Math.round(colorAlphaSlider.value*100)/100
+                        onEditingFinished: { colorAlphaSlider.value = parseFloat(text) }
                     }
                     Label {
                         anchors.right: parent.right
