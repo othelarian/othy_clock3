@@ -10,7 +10,7 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
 {
     // INIT COLORS ########
     // global background color
-    m_default["col_bg"] = QColor::fromRgbF(0,0,0);
+    m_default["col_bg"] = QColor(0,0,0);
     // months colors
     //
     // days colors
@@ -18,11 +18,11 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     // week colors
     //
     // hours colors
-    m_default["col_hours_fticks"] = QColor::fromRgbF(1,0.4,0.01);
-    m_default["col_hours_bticks"] = QColor::fromRgbF(0.8,0.8,0.8);
-    m_default["col_hours_bg"] = QColor::fromRgbF(0.3,0.3,0.3);
-    m_default["col_hours_arc"] = QColor::fromRgbF(0,0.5,1);
-    m_default["col_hours_needle"] = QColor::fromRgbF(1,0.4,0.01);
+    m_default["col_hours_fticks"] = QColor(255,100,10,150);
+    m_default["col_hours_bticks"] = QColor(200,200,200,100);
+    m_default["col_hours_bg"] = QColor(60,60,60);
+    m_default["col_hours_arc"] = QColor(0,125,255);
+    m_default["col_hours_needle"] = QColor(255,100,10);
     // minutes colors
     //
     // seconds colors
@@ -67,7 +67,9 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     m_default["active_hours_needle"] = true;
     //
     m_default["active_hours_fticks"] = true;
+    m_default["active_hours_fticks_tail"] = true;
     m_default["active_hours_bticks"] = true;
+    m_default["active_hours_bticks_tail"] = true;
     //
     // minutes actives
     m_default["active_minutes_bg"] = true;
@@ -102,8 +104,20 @@ void OCsettings::resetSetting(QString name)
     m_settings.remove(name);
 }
 
-QColor OCsettings::getColor(QString name) { return m_values[name].value<QColor>(); }
+QColor OCsettings::getColor(QString name, bool def)
+{
+    if (def) { return m_default[name].value<QColor>(); }
+    else { return m_values[name].value<QColor>(); }
+}
 
-int OCsettings::getSize(QString name) { return m_values[name].toInt(); }
+int OCsettings::getSize(QString name, bool def)
+{
+    if (def) { return m_default[name].toInt(); }
+    else { return m_values[name].toInt(); }
+}
 
-bool OCsettings::getActive(QString name) { return m_values[name].toBool(); }
+bool OCsettings::getActive(QString name, bool def)
+{
+    if (def) { return m_default[name].toBool(); }
+    else { return m_values[name].toBool(); }
+}

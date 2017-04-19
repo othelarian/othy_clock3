@@ -13,9 +13,9 @@ public:
     static OCsettings* getInstance();
     Q_INVOKABLE void setSetting(QString name, QVariant value);
     Q_INVOKABLE void resetSetting(QString name);
-    Q_INVOKABLE QColor getColor(QString name);
-    Q_INVOKABLE int getSize(QString name);
-    Q_INVOKABLE bool getActive(QString name);
+    Q_INVOKABLE QColor getColor(QString name, bool def = false);
+    Q_INVOKABLE int getSize(QString name, bool def = false);
+    Q_INVOKABLE bool getActive(QString name, bool def = false);
 private:
     OCsettings(QObject *parent = 0);
     static OCsettings* m_instance;

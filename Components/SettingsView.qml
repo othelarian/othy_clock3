@@ -6,9 +6,12 @@ Item {
     visible: false
     // properties
     property string title
-    property var listmodel
-    property bool init: false
-    property bool mod: false
+    property var listmodel: ListModel {}
+    property bool settings_mod
+    property bool settings_cancel
+    property bool settings_reset
+    // events handlers
+    onVisibleChanged: { if (settingsView.visible) { root.initSettingView() } }
     // elements
     Label {
         id: titleLab
@@ -26,20 +29,25 @@ Item {
         anchors.margins: 10
         spacing: 10
         Button {
-            //
-            enabled: mod
-            height: 30
-            //
+            enabled: settings_mod; height: 30; width: 80
             text: "Valider"
-            //
+            onClicked: root.validateSettings()
         }
         Button {
-            //
-            height: 30
-            //
-            text: "Défaut"
-            //
+            enabled: settings_cancel; height: 30; width: 80
+            text: "Annuler"
+            onClicked: root.setCancelMode()
         }
+        Button {
+            enabled: settings_reset; height: 30; width: 80
+            text: "Défaut"
+            onClicked: root.setResetMode()
+        }
+    }
+    Row {
+        //
+        // TODO : cancel / reset mode actions
+        //
     }
     ListView {
         id: optionsList
@@ -76,7 +84,7 @@ Item {
                 ColorButton {
                     visible: (type == "color")? true : false
                     colorsetting: setting
-                    colorbtn: (type == "color")? ocsettings.getColor(setting) : "black"
+                    colorbtn: (type == "color")? Qt.rgba(tmpvalue.r,tmpvalue.g,tmpvalue.b,tmpvalue.a) : "black"
                     coloralpha: (type == "color")? alpha : false
                     anchors.centerIn: parent
                 }
@@ -94,6 +102,9 @@ Item {
                     anchors.centerIn: parent
                     //
                 }
+                //
+                // TODO : add the reset checkbox
+                //
             }
         }
         ScrollIndicator.vertical: ScrollIndicator {
