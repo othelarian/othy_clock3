@@ -2,10 +2,7 @@
 
 var currview
 var qmlsetting = {
-    "list": ["bg"],
-    "seconds": {},
-    "minutes": {},
-    "hours": {},
+    "list": ["bg","seconds","minutes","hours"],
     "week": {},
     "days": {},
     "months": {}
@@ -20,23 +17,90 @@ function init() {
     qmlsetting["bg"] = {
         "view": backgroundSettingView,
         "setting_list": ["col_bg"],
-        "col_bg": {
-            type: "color", alpha: false, mod: false,
-            label: "Couleur du fond :",
-            defvalue: ocsettings.getColor("col_bg",true),
-            actvalue: ocsettings.getColor("col_bg"),
-            tmpvalue: ocsettings.getColor("col_bg")
+        "col_bg": { type: "color", alpha: false, label: "Couleur du fond :", depend: "" }
+    }
+    qmlsetting["seconds"] = {
+        "view": secondsSettingView,
+        "setting_list": []
+        //
+    }
+    qmlsetting["minutes"] = {
+        "view": minutesSettingView,
+        "setting_list": []
+        //
+    }
+    qmlsetting["hours"] = {
+        "view": hoursSettingView,
+        "setting_list": [
+            "active_hours_bg","col_hours_bg",
+            "active_hours_arc","col_hours_arc",
+            "active_hours_needle","col_hours_needle",
+        ],
+        "active_hours_bg": {
+            type: "bool",
+            label: "Arc de fond actif :"
+            //
+        },
+        "col_hours_bg": {
+            type: "color", alpha: true,
+            label: "Couleur arc de fond :"
+            //
+        },
+        //
+        "active_hours_arc": {
+            type: "bool",
+            label: "Arc actif :"
+            //
+        },
+        "col_hours_arc": {
+            type: "color", alpha: true,
+            label: "Couleur arc :"
+            //
+        },
+        //
+        "active_hours_needle": {
+            type: "bool",
+            label: "Aiguille active :"
+            //
+        },
+        "col_hours_needle": {
+            type: "color", alpha: true,
+            label: "Couleur aiguille :"
+            //
         }
+        //
     }
     //
-    qmlsetting["seconds"].view = secondsSettingView
-    qmlsetting["minutes"].view = minutesSettingView
-    qmlsetting["hours"].view = hoursSettingView
     qmlsetting["week"].view = weekSettingView
     qmlsetting["days"].view = daysSettingView
     qmlsetting["months"].view = monthsSettingView
     //
     //
+    for (var i=0;i<qmlsetting["list"].length;i++) {
+        var elt1 = qmlsetting["list"][i]
+        for (var j=0;j<qmlsetting[elt1]["setting_list"].length;j++) {
+            var elt2 = qmlsetting[elt1]["setting_list"][j]
+            var def, act
+            switch (qmlsetting[elt1][elt2].type) {
+            case "color":
+                def = ocsettings.getColor(elt2,true)
+                act = ocsettings.getColor(elt2)
+                break
+            case "number":
+                def = ocsettings.getSize(elt2,true)
+                act = ocsettings.getSize(elt2)
+                break
+            case "bool":
+                def = ocsettings.getActive(elt2,true)
+                act = ocsettings.getActive(elt2)
+                break
+            }
+            qmlsetting[elt1][elt2].defvalue = def
+            qmlsetting[elt1][elt2].actvalue = act
+            qmlsetting[elt1][elt2].tmpvalue = act
+            qmlsetting[elt1][elt2].mod = false
+        }
+    }
     // init visuals
     //
     bgAll.color = ocsettings.getColor("col_bg")
@@ -46,6 +110,7 @@ function init() {
     var dte = new Date()
     //
     hoursCog.value = dte.getHours()
+    hoursBg.value = dte.getHours()
     root.hour = dte.getHours()
     //
     minutesTicks.visible = false
@@ -67,7 +132,8 @@ function timing() {
     if (dte.getHours() != root.hour) {
         hour = dte.getHours()
         hoursCog.value = hour
-        bgElt.hoursValue = hour
+        hoursBg.value = hour
+        //bgElt.hoursValue = hour
         //
         // TODO : hours ticks
         // TODO : separate hours bg ?
@@ -112,39 +178,59 @@ function initSettingView() {
         var obj = {
             label: qmlsetting[currview][elt].label,
             type: qmlsetting[currview][elt].type,
-            setting: elt,
-            tmpvalue: qmlsetting[currview][elt].tmpvalue
+            setting: elt
         }
         //
         switch (obj.type) {
-        case "color": obj.alpha = qmlsetting[currview][elt].alpha; break
+        case "color":
+            obj.alpha = qmlsetting[currview][elt].alpha
+            obj.tcolor = qmlsetting[currview][elt].tmpvalue
+            break
         case "number":
+            //
+            obj.tvalue = qmlsetting[currview][elt].tmpvalue
             //
             break
         case "bool":
             //
+            obj.tbool = qmlsetting[currview][elt].tmpvalue
+            //
             break
         }
         //
-        qmlsetting[currview].view.listmodel.append(obj)
+        obj.mod = (qmlsetting[currview][elt].actvalue != qmlsetting[currview][elt].tmpvalue)? true : false
         //
         // TODO : check for settings mod/cancel/reset
         //
+        settings_mod = settings_mod || obj.mod
+        settings_cancel = settings_cancel || obj.mod
+        //
+        //
+        qmlsetting[currview].view.listmodel.append(obj)
     }
     qmlsetting[currview].view.settings_mod = settings_mod
     qmlsetting[currview].view.settings_cancel = settings_cancel
     qmlsetting[currview].view.settings_reset = settings_reset
+    qmlsetting[currview].view.actions_mode = false
 }
 
 function validateSettings() {
+    for (var i=0;i<qmlsetting[currview].view.listmodel.count;i++) {
+        //
+        console.log(qmlsetting[currview].view.listmodel.get(i).setting)
+        console.log(qmlsetting[currview].view.listmodel.get(i).mod)
+        //
+        var elt = qmlsetting[currview].view.listmodel.get(i)
+        //
+        //
+    }
     //
-    console.log("validate settings")
     //
 }
 
 function setCancelMode() {
-    //
-    console.log("set cancel mode")
+    qmlsetting[currview].view.actions_mode = true
+    qmlsetting[currview].view.actions = "cancel"
     //
 }
 
@@ -153,14 +239,9 @@ function validateCancelMode() {
     //
 }
 
-function cancelCancelMode() {
-    //
-    //
-}
-
 function setResetMode() {
-    //
-    console.log("set reset mode")
+    qmlsetting[currview].view.actions_mode = true
+    qmlsetting[currview].view.actions = "reset"
     //
 }
 
@@ -169,10 +250,7 @@ function validateResetMode() {
     //
 }
 
-function cancelResetMode() {
-    //
-    //
-}
+function cancelActionsMode() { qmlsetting[currview].view.actions_mode = false }
 
 // COLOR SELECTOR ###########
 
@@ -266,6 +344,7 @@ function checkColor() {
 }
 
 function validColor() {
-    qmlsetting[currview][colorSelectorView.setting].tmpvalue = colorSelectorView.currentcolor
+    var ncol = colorSelectorView.currentcolor
+    qmlsetting[currview][colorSelectorView.setting].tmpvalue = Qt.rgba(ncol.r,ncol.g,ncol.b,ncol.a)
     mainView.pop()
 }

@@ -1,5 +1,7 @@
 #include "ochours.h"
 
+#include <QDebug>
+
 // OChoursTicks methods #################
 
 OChoursTicks::OChoursTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
@@ -83,3 +85,37 @@ void OChoursCog::paint(QPainter *painter)
 }
 
 void OChoursCog::setValue(int value) { m_value = value; update(); }
+
+// OChoursBg methods ####################
+
+OChoursBg::OChoursBg(QQuickItem *parent) : QQuickPaintedItem(parent)
+{
+    m_settings = OCsettings::getInstance();
+}
+
+void OChoursBg::paint(QPainter *painter)
+{
+    if (m_settings->getActive("active_hours_bg") && (!m_settings->getActive("active_hours_bg_tail") || m_value != 12)) {
+        // set basic parameters
+        int dim = qMin(width(),height());
+        double scale = dim/300.0;
+        QPointF center(width()/2,height()/2);
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->translate(center);
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QBrush(m_settings->getColor("col_hours_bg")));
+        int size = int(m_settings->getSize("size_hours_bg_dim")*scale);
+        int thick = int(m_settings->getSize("size_hours_bg_thick")*scale);
+        // if the background is a full circle
+        if (!m_settings->getActive("active_hours_bg_tail") || m_value == 0) {
+            painter->drawPath(ocDrawRing(size,thick));
+        }
+        // otherwise
+        else {
+            int arc = 30*((m_value < 12)? m_value : m_value-12);
+            painter->drawPath(ocDrawArc(size,thick,arc,m_value > 12));
+        }
+    }
+}
+
+void OChoursBg::setValue(int value) { m_value = value; update(); }

@@ -10,6 +10,8 @@ Item {
     property bool settings_mod
     property bool settings_cancel
     property bool settings_reset
+    property bool actions_mode
+    property string actions
     // events handlers
     onVisibleChanged: { if (settingsView.visible) { root.initSettingView() } }
     // elements
@@ -29,25 +31,44 @@ Item {
         anchors.margins: 10
         spacing: 10
         Button {
+            visible: !actions_mode
             enabled: settings_mod; height: 30; width: 80
             text: "Valider"
             onClicked: root.validateSettings()
         }
         Button {
+            visible: !actions_mode
             enabled: settings_cancel; height: 30; width: 80
             text: "Annuler"
             onClicked: root.setCancelMode()
         }
         Button {
+            visible: !actions_mode
             enabled: settings_reset; height: 30; width: 80
             text: "Défaut"
             onClicked: root.setResetMode()
         }
-    }
-    Row {
-        //
-        // TODO : cancel / reset mode actions
-        //
+        Label {
+            visible: actions_mode
+            anchors.verticalCenter: parent.verticalCenter
+            text: (actions == "cancel")? "Annuler" : "Défaut"
+        }
+        Button {
+            //
+            visible: actions_mode
+            //
+            enabled: false // TODO
+            //
+            height: 30; width: 80
+            text: "Valider"
+            //
+        }
+        Button {
+            visible: actions_mode
+            height: 30; width: 80
+            text: "Terminer"
+            onClicked: root.cancelActionsMode()
+        }
     }
     ListView {
         id: optionsList
@@ -75,6 +96,12 @@ Item {
                 width: parent.width-130
                 wrapMode: TextInput.WordWrap
                 text: label
+                font.bold: mod
+                //
+                color: "black"
+                //
+                // TODO : depend
+                //
             }
             Item {
                 anchors.right: parent.right
@@ -82,14 +109,14 @@ Item {
                 width: 120
                 height: parent.height
                 ColorButton {
-                    visible: (type == "color")? true : false
+                    visible: !actions_mode && (type == "color")? true : false
                     colorsetting: setting
-                    colorbtn: (type == "color")? Qt.rgba(tmpvalue.r,tmpvalue.g,tmpvalue.b,tmpvalue.a) : "black"
+                    colorbtn: (type == "color")? Qt.rgba(tcolor.r,tcolor.g,tcolor.b,tcolor.a) : "black"
                     coloralpha: (type == "color")? alpha : false
                     anchors.centerIn: parent
                 }
                 SpinBox {
-                    visible: (type == "number")? true : false
+                    visible: !actions_mode && (type == "number")? true : false
                     //
                     from: 0; to: 300
                     height: 30
@@ -97,13 +124,25 @@ Item {
                     //
                 }
                 Switch {
-                    visible: (type == "bool")? true : false
+                    visible: !actions_mode && (type == "bool")? true : false
+                    checked: (type == "bool")? tbool : false
+                    //
+                    anchors.centerIn: parent
+                    //
+                    onCheckedChanged: {
+                        //
+                    }
+                }
+                //
+                // TODO : add the reset checkbox
+                //
+                CheckBox {
+                    //
+                    visible: actions_mode
                     //
                     anchors.centerIn: parent
                     //
                 }
-                //
-                // TODO : add the reset checkbox
                 //
             }
         }

@@ -4,7 +4,6 @@
 #include <QPainterPath>
 
 #include "ocsettings.h"
-#include "ocbackground.h"
 #include "ocmonths.h"
 #include "ocdays.h"
 #include "ocweek.h"
@@ -46,19 +45,36 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("Othy Software");
     OCsettings* ocsettings = OCsettings::getInstance();
     // set the qml custom types
-    qmlRegisterType<OCbackground>("OCelements",1,0,"OCbackground");
     qmlRegisterType<OCmonthsTicks>("OCelements",1,0,"OCmonthsTicks");
     qmlRegisterType<OCmonthsCog>("OCelements",1,0,"OCmonthsCog");
+    //
+    // TODO : OCmonthsBg
+    //
     qmlRegisterType<OCdaysTicks>("OCelements",1,0,"OCdaysTicks");
     qmlRegisterType<OCdaysCog>("OCelements",1,0,"OCdaysCog");
+    //
+    // TODO : OCdaysBg
+    //
     qmlRegisterType<OCweekTicks>("OCelements",1,0,"OCweekTicks");
     qmlRegisterType<OCweekCog>("OCelements",1,0,"OCweekCog");
+    //
+    // TODO : OCweekBg
+    //
     qmlRegisterType<OChoursTicks>("OCelements",1,0,"OChoursTicks");
     qmlRegisterType<OChoursCog>("OCelements",1,0,"OChoursCog");
+    //
+    qmlRegisterType<OChoursBg>("OCelements",1,0,"OChoursBg");
+    //
     qmlRegisterType<OCminutesTicks>("OCelements",1,0,"OCminutesTicks");
     qmlRegisterType<OCminutesCog>("OCelements",1,0,"OCminutesCog");
+    //
+    // TODO : OCminutesBg
+    //
     qmlRegisterType<OCsecondsTicks>("OCelements",1,0,"OCsecondsTicks");
     qmlRegisterType<OCsecondsCog>("OCelements",1,0,"OCsecondsCog");
+    //
+    // TODO : OCsecondsBg
+    //
     // load the engine
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("ocsettings",ocsettings);

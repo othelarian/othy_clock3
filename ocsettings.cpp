@@ -63,6 +63,7 @@ OCsettings::OCsettings(QObject *parent) : QObject(parent)
     //
     // hours actives
     m_default["active_hours_bg"] = true;
+    m_default["active_hours_bg_tail"] = true;
     m_default["active_hours_arc"] = true;
     m_default["active_hours_needle"] = true;
     //

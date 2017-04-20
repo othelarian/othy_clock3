@@ -27,10 +27,9 @@ Window {
     function validateSettings() { Script.validateSettings() }
     function setCancelMode() { Script.setCancelMode() }
     function validateCancelMode() { Script.validateCancelMode() }
-    function cancelCancelMode() { Script.cancelCancelMode() }
     function setResetMode() { Script.setResetMode() }
     function validateResetMode() { Script.validateResetMode() }
-    function cancelResetMode() { Script.cancelResetMode() }
+    function cancelActionsMode() { Script.cancelActionsMode() }
     //
     function initColorSelector(setting,alpha) { Script.initColorSelector(setting,alpha) }
     // launch time ##############################
@@ -39,6 +38,12 @@ Window {
     Timer {
         id: timer; interval: 1000; running: false; repeat: true
         onTriggered: Script.timing()
+    }
+    // keyboard shortcuts #######################
+    Shortcut {
+        sequence: "Ctrl+S"
+        context: Qt.ApplicationShortcut
+        onActivated: { if (drawer.visible) { drawer.close() } else { drawer.open() } }
     }
     // main view ################################
     StackView {
@@ -50,24 +55,38 @@ Window {
             id: clockView
             // global background ########################
             Rectangle { id: bgAll; anchors.fill: parent }
-            // elements background ######################
-            OCbackground { id: bgElt; anchors.fill: parent }
             // months ###################################
+            //
+            // TODO : OCmonthsBg
+            //
             OCmonthsCog { id: monthsCog; anchors.fill: parent }
             OCmonthsTicks { id: monthsTicks; anchors.fill: parent }
             // days #####################################
+            //
+            // TODO : OCdaysBg
+            //
             OCdaysCog { id: daysCog; anchors.fill: parent }
             OCdaysTicks { id: daysTicks; anchors.fill: parent }
             // week #####################################
+            //
+            // TODO : OCdaysBg
+            //
             OCweekCog { id: weekCog; anchors.fill: parent }
             OCweekTicks { id: weekTicks; anchors.fill: parent }
             // hours ####################################
+            OChoursBg { id: hoursBg; anchors.fill: parent }
             OChoursCog { id: hoursCog; anchors.fill: parent }
             OChoursTicks { id: hoursTicks; anchors.fill: parent }
             // minutes ##################################
+            //
+            // TODO : OChoursBg
+            //
             OCminutesCog { id: minutesCog; anchors.fill: parent }
             OCminutesTicks { id: minutesTicks; anchors.fill: parent }
             // seconds ##################################
+            //
+            // TODO : OCsecondsBg
+            //
             OCsecondsTicks { id: secondsTicks; anchors.fill: parent }
             OCsecondsCog { id: secondsCog; anchors.fill: parent }
         }
@@ -77,39 +96,19 @@ Window {
             title: "Fond"
         }
         // seconds settings view ####################
-        Item {
+        SettingsView {
             id: secondsSettingView
-            visible: false
-            //
-            //
-            Text { text: "seconds settings" }
+            title: "Secondes"
         }
         // minutes settings view ####################
-        Item {
+        SettingsView {
             id: minutesSettingView
-            visible: false
-            //
-            //
-            Text { text: "minutes settings" }
+            title: "Minutes"
         }
         // hours settings view ######################
         SettingsView {
             id: hoursSettingView
-            //
-            //
-            listmodel: ListModel {
-                /*
-                ListElement { label: "Arc actif :"; type: "bool"; setting: "" }
-                ListElement { label: "Couleur de l'arc :"; type: "color"; setting: ""; alpha: true }
-                ListElement { label: "Taille de l'arc :"; type: "number"; setting: "" }
-                ListElement { label: "Épaisseur de l'arc :"; type: "number"; setting: "" }
-                ListElement { label: "Arc de fond actif :"; type: "bool"; setting: "" }
-                ListElement { label: "Couleur de l'arc de fond :"; type: "color"; setting: ""; alpha: true }
-                ListElement { label: "Taille de l'arc de fond :"; type: "number"; setting: "" }
-                ListElement { label: "Épaisseur de l'arc de fond :"; type: "number"; setting: "" }
-                */
-                //
-            }
+            title: "Heures"
         }
         // week settings view #######################
         Item {

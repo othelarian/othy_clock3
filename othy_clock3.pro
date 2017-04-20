@@ -7,7 +7,6 @@ SOURCES += main.cpp \
     ocseconds.cpp \
     ocminutes.cpp \
     ochours.cpp \
-    ocbackground.cpp \
     ocsettings.cpp \
     ocweek.cpp \
     ocdays.cpp \
@@ -41,7 +40,6 @@ HEADERS += \
     ocseconds.h \
     ocminutes.h \
     ochours.h \
-    ocbackground.h \
     ocsettings.h \
     ocweek.h \
     ocdays.h \

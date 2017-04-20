@@ -30,8 +30,6 @@ public:
     //void setDual(bool dual);
     //void setValue(int value);
     //
-    //void forceupdate();
-    //
 private:
     OCsettings* m_settings;
     bool m_active;
@@ -49,9 +47,21 @@ public:
     OChoursCog(QQuickItem *parent = 0);
     void paint(QPainter *painter);
     void setValue(int value);
-    //
-    //forceupdate (change color or size for example)
-    //
+private:
+    OCsettings* m_settings;
+    int m_value;
+};
+
+// OChoursBg class ######################
+
+class OChoursBg : public QQuickPaintedItem
+{
+    Q_OBJECT
+    Q_PROPERTY(int value WRITE setValue)
+public:
+    OChoursBg(QQuickItem *parent = 0);
+    void paint(QPainter *painter);
+    void setValue(int value);
 private:
     OCsettings* m_settings;
     int m_value;
