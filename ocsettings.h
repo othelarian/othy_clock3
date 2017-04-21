@@ -18,6 +18,12 @@ public:
     Q_INVOKABLE bool getActive(QString name, bool def = false);
 private:
     OCsettings(QObject *parent = 0);
+    void initSeconds();
+    void initMinutes();
+    void initHours();
+    void initWeek();
+    void initDays();
+    void initMonths();
     static OCsettings* m_instance;
     QSettings m_settings;
     QHash<QString,QVariant> m_default;

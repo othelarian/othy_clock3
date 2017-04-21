@@ -21,20 +21,14 @@ QPainterPath ocDrawArc(int size, int thick, int angle, bool sens);
 class OChoursTicks : public QQuickPaintedItem
 {
     Q_OBJECT
+    Q_PROPERTY(int value WRITE setValue)
 public:
     OChoursTicks(QQuickItem *parent = 0);
     void paint(QPainter *painter);
-    //bool getActive();
-    //void setActive(bool active);
-    //bool getDual();
-    //void setDual(bool dual);
-    //void setValue(int value);
-    //
+    void setValue(int value);
 private:
     OCsettings* m_settings;
-    bool m_active;
-    bool m_dual;
-    int value;
+    int m_value;
 };
 
 // OChoursCog class #####################

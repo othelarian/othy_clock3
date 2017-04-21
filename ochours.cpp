@@ -1,7 +1,5 @@
 #include "ochours.h"
 
-#include <QDebug>
-
 // OChoursTicks methods #################
 
 OChoursTicks::OChoursTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
@@ -11,33 +9,47 @@ OChoursTicks::OChoursTicks(QQuickItem *parent) : QQuickPaintedItem(parent)
 
 void OChoursTicks::paint(QPainter *painter)
 {
-    if (!m_settings->getActive("active_hours_fticks") && !m_settings->getActive("ative_hours_bticks")) return;
-    // set basic parameters
-    int dim = qMin(width(),height());
-    double scale = dim/300.0;
-    QPointF center(width()/2,height()/2);
-    painter->setRenderHint(QPainter::Antialiasing);
-    painter->translate(center);
-    painter->setPen(Qt::NoPen);
-    // painting ticks
-    painter->save();
-    //
-    painter->setBrush(QBrush(QColor(0,255,0)));
-    //
-    QPainterPath path;
-    for (int i=0;i<12;i++) {
-        //
-        //path
-        path.moveTo(0,-100);
-        //
-        //path.moveTo();
-        //
-        //painter->addRect();
-        //
+    if (m_settings->getActive("active_hours_fticks") || m_settings->getActive("ative_hours_bticks")) {
+        // set basic parameters
+        int dim = qMin(width(),height());
+        double scale = dim/300.0;
+        QPointF center(width()/2,height()/2);
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->translate(center);
+        painter->setPen(Qt::NoPen);
+        // specific parameters
+        int bdist = int(m_settings->getSize("size_hours_bticks_dist")*scale);
+        int bsize = int(m_settings->getSize("size_hours_bticks_dim")*scale);
+        int bthick = int(m_settings->getSize("size_hours_bticks_thick")*scale);
+        int fdist = int(m_settings->getSize("size_hours_fticks_dist")*scale);
+        int fsize = int(m_settings->getSize("size_hours_fticks_dim")*scale);
+        int fthick = int(m_settings->getSize("size_hours_fticks_thick")*scale);
+        // painting ticks
+        painter->rotate(-90);
+        for (int i=0;i<12;i++) {
+            // draw the back ticks
+            if (m_settings->getActive("active_hours_bticks") && (!m_settings->getActive("active_hours_bticks_tail") || (m_value < 12 && i > m_value) || (m_value > 12 && i < m_value%12 && i != 12 && i != 0))) {
+                painter->save();
+                painter->setBrush(QBrush(m_settings->getColor("col_hours_bticks")));
+                painter->translate(bdist,0);
+                painter->drawRect(-bsize/2,-bthick/2,bsize,bthick);
+                painter->restore();
+            }
+            // draw the front ticks
+            if (m_settings->getActive("active_hours_fticks") && ((i == m_value%12) || (m_settings->getActive("active_hours_fticks_tail") && ((i == 0) || (m_value == 12) || (m_value < 12 && i < m_value) || (m_value > 12 && i > m_value%12))))) {
+                painter->save();
+                painter->setBrush(QBrush(m_settings->getColor("col_hours_fticks")));
+                painter->translate(fdist,0);
+                painter->drawRect(-fsize/2,-fthick/2,fsize,fthick);
+                painter->restore();
+            }
+            // rotate
+            painter->rotate(30);
+        }
     }
-    //
-    painter->restore();
 }
+
+void OChoursTicks::setValue(int value) { m_value = value; update(); }
 
 // OChoursCog methods ###################
 

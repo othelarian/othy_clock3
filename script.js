@@ -105,13 +105,12 @@ function init() {
     //
     bgAll.color = ocsettings.getColor("col_bg")
     //
-    hoursTicks.visible = false
-    //
     var dte = new Date()
     //
-    hoursCog.value = dte.getHours()
-    hoursBg.value = dte.getHours()
     root.hour = dte.getHours()
+    hoursBg.value = root.hour
+    hoursCog.value = root.hour
+    hoursTicks.value = root.hour
     //
     minutesTicks.visible = false
     minutesCog.visible = false
@@ -131,8 +130,9 @@ function timing() {
     //
     if (dte.getHours() != root.hour) {
         hour = dte.getHours()
-        hoursCog.value = hour
         hoursBg.value = hour
+        hoursCog.value = hour
+        hoursTicks.value = hour
         //bgElt.hoursValue = hour
         //
         // TODO : hours ticks

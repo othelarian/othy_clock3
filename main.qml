@@ -74,9 +74,9 @@ Window {
             OCweekCog { id: weekCog; anchors.fill: parent }
             OCweekTicks { id: weekTicks; anchors.fill: parent }
             // hours ####################################
+            OChoursTicks { id: hoursTicks; anchors.fill: parent }
             OChoursBg { id: hoursBg; anchors.fill: parent }
             OChoursCog { id: hoursCog; anchors.fill: parent }
-            OChoursTicks { id: hoursTicks; anchors.fill: parent }
             // minutes ##################################
             //
             // TODO : OChoursBg
